@@ -13,7 +13,7 @@ import (
 var DB *sql.DB
 
 // Реализация обработчика запроса
-func handler(w http.ResponseWriter, r *http.Request) {
+func indexHandler(w http.ResponseWriter, r *http.Request) {
 	// Выполнение запроса к базе данных
 	rows, err := DB.Query(`SELECT name_cat FROM Category`)
 	if err != nil {
@@ -48,35 +48,10 @@ func main() {
 	// Закрытие соединения с БД по выходу из функции main
 	defer DB.Close()
 
-	// CREATE TABLE Category (
-	// 	id_cat   INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	name_cat TEXT    NOT NULL
-	// 					 UNIQUE,
-	// 	url_cat  TEXT    NOT NULL
-	// 					 UNIQUE
-	// );
-
-	// CREATE TABLE Subcategory (
-	// 	id_subc   INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	id_cat            REFERENCES Category (id_cat),
-	// 	name_subc TEXT    NOT NULL
-	// 					  UNIQUE,
-	// 	url_subc  TEXT    NOT NULL
-	// 					  UNIQUE
-	// );
-
-	// CREATE TABLE Model (
-	// 	id_mod      INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	name_mod    TEXT    NOT NULL
-	// 						UNIQUE ON CONFLICT ROLLBACK,
-	// 	price       INTEGER,
-	// 	country     TEXT,
-	// 	manufacture TEXT,
-	// 	weight      INTEGER
-	// );
-
 	// Установка обработчика запроса по данному запросу
-	http.HandleFunc("/", handler)
+	fs := http.FileServer(http.Dir("static"))
+	http.HandleFunc("/", indexHandler)
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	log.Println("Listening...")
 	// Запуск локального сервека на 8080 порту

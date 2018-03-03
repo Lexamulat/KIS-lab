@@ -22,29 +22,57 @@
 <body>
 
     <div class="container l-container">
-        <div class="row">
-            <!-- Table -->
-            <div class="col s8 l-table">
-                <div>
 
-                    <ul class="l-table_elem l-table_elem-header">
-                        <li>ID</li>
-                        <li>NAME</li>
-                        <li>URL</li>
-                    </ul>
+        <!-- HEADER -->
+        <div class="l-header">
+            <a class="waves-effect waves-light btn">INSERT</a>
+            <a class="waves-effect waves-light btn red">DELETE</a>
+            <a class="waves-effect waves-light btn">UPDATE</a>
+            <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a>
 
-                    {{range $name := . }}
-                    <ul class="l-table_elem">
-                        <li>ID</li>
-                        <li>{{ $name }}</li>
-                        <li>URL</li>
-                    </ul>
-                    {{end}}
-                </div>
+            <div class="input-field">
+                <input id="icon_prefix" type="text" class="validate">
+                <label for="icon_prefix">First Name</label>
             </div>
+        </div>
+
+
+        <div class="l-row">
+            <!-- Table -->
+            <div class="l-table">
+
+                <table class="striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>URL</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range $name := . }}
+                        <tr>
+                            <td>{{ $name.ID }}</td>
+                            <td>{{ $name.Name }}</td>
+                            <td>{{ $name.URL }}</td>
+                            <td></td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+
+
             <!-- Log -->
-            <div class="col s4 l-log">
-                sdfsdfg
+            <div class="l-log">
+                dfg
+                <!-- <ul>
+                    <li>Alvin</li>
+                    <li>Alvin</li>
+                    <li>Alvin</li>
+                    <li>Alvin</li>
+                </ul> -->
             </div>
 
         </div>

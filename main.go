@@ -12,10 +12,16 @@ import (
 // DB указатель на соединение с базой данных
 var DB *sql.DB
 
+type DBCategory struct {
+	ID   int
+	Name string
+	URL  string
+}
+
 // Реализация обработчика запроса
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	// Выполнение запроса к базе данных
-	rows, err := DB.Query(`SELECT name_cat FROM Category`)
+	rows, err := DB.Query(`SELECT * FROM Category`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,17 +30,17 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("tmpl/index.html")
 
 	// Создание массива для снятия слепка с базы данных,
-	names := []string{}
+	el := []DBCategory{}
 	// Итерируемся по всем строкам, который вернул запрос SQLite
 	for rows.Next() {
-		var temp string
-		rows.Scan(&temp)
+		var temp DBCategory
+		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
 		// Записывает возвращенные данные в слепок
-		names = append(names, temp)
+		el = append(el, temp)
 	}
 
 	// Вписываем данные в шаблон HTML страницы, дл отдачи пользователю
-	tmpl.Execute(w, names)
+	tmpl.Execute(w, el)
 }
 
 func main() {

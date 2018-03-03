@@ -124,6 +124,13 @@ body {
 .l-log {
     background-color: #edf2f4;
     flex-grow: 3;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+}
+
+.l-log li {
+    padding: 5px;
 }
 
 

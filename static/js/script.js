@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let name = $("#modalInsert_name").val()
         let url = $("#modalInsert_name").val()
         Materialize.toast(`Insert "${name}"`, 4000)
+        addLog(`Добавленоа 1 запись.`)
     });
 
 
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $(Search).on('input', function() {
         Materialize.toast(`Search "${Search.val()}"`, 1000)
+        addLog(`Найдено 2 записи.`)
     });
 
 }, false);
@@ -38,6 +40,7 @@ function edit(id, name_old, url_old) {
 
     $(ok).click(function() {
         Materialize.toast(`Edit ${id}`, 4000)
+        addLog(`Изменена 1 запись.`)
     });
 }
 
@@ -51,5 +54,10 @@ function del(id) {
 
     $(ok).click(function() {
         Materialize.toast(`Delete ${id}`, 4000)
+        addLog(`Удалена 1 запись.`)
     });
+}
+
+function addLog(str) {
+    $('.l-log').append(`<li>${str}</li>`);
 }

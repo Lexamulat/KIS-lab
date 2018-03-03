@@ -35,10 +35,16 @@ body {
     padding: 5px;
     display: flex;
     align-items: center;
+    justify-content: space-around;
+}
+
+.l-header a {
+    /* flex-grow: 1; */
 }
 
 .l-header .input-field {
     margin: 0;
+    width: 45%;
 }
 
 
@@ -78,14 +84,35 @@ body {
 
 .l-table td,
 .l-table th {
-    flex: 1 0 10em;
-    flex-grow: 7;
+    border-right: 1px solid #d4d4d4;
+    width: 40%;
+    border-radius: 0;
     text-align: center;
 }
 
 .l-table td:first-child,
 .l-table th:first-child {
-    flex-grow: 1;
+    width: 10%;
+    /* flex-grow: 2; */
+}
+
+.l-table td:last-child,
+.l-table th:last-child {
+    width: 10%;
+    /* flex-grow: 1; */
+}
+
+.l-table_edit,
+.l-table_del {
+    margin: 0 !important;
+}
+
+.l-table_edit {
+    color: green;
+}
+
+.l-table_del {
+    color: red;
 }
 
 

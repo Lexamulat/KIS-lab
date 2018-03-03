@@ -11,7 +11,8 @@
 
     <!-- Materialize -->
     <link rel="stylesheet" href="/static/css/materialize.css">
-    <script src="/static/js/materialize.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.js"></script>
 
     <!-- Lab 4 -->
     <link rel="stylesheet" href="/static/css/style.css">
@@ -25,8 +26,7 @@
 
         <!-- HEADER -->
         <div class="l-header">
-            <a class="waves-effect waves-light btn">INSERT</a>
-            <a class="waves-effect waves-light btn red">DELETE</a>
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Insert</a>
             <a class="waves-effect waves-light btn">UPDATE</a>
             <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a>
 
@@ -47,7 +47,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>URL</th>
-                            <th></th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,8 +57,8 @@
                             <td>{{ $name.Name }}</td>
                             <td>{{ $name.URL }}</td>
                             <td>
-                                <i class="material-icons left l-table_edit">edit</i>
-                                <i class="material-icons right l-table_del">delete</i>
+                                <i class="material-icons left l-table_edit" onclick="edit({{ $name.ID }})">edit</i>
+                                <i class="material-icons right l-table_del" onclick="del({{ $name.ID }})">delete</i>
                             </td>
                         </tr>
                         {{end}}
@@ -69,15 +69,30 @@
 
             <!-- Log -->
             <div class="l-log">
-                dfg
-                <!-- <ul>
-                    <li>Alvin</li>
-                    <li>Alvin</li>
-                    <li>Alvin</li>
-                    <li>Alvin</li>
-                </ul> -->
+                <!-- Modal Trigger -->
+                <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
+
+
+
             </div>
 
+        </div>
+    </div>
+
+
+    <!-- MODAL -->
+
+    <!-- INSERT -->
+    <div id="modal1" class="modal" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 4%;">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Disagree</a>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
         </div>
     </div>
 

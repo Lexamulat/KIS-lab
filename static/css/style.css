@@ -105,14 +105,23 @@ body {
 .l-table_edit,
 .l-table_del {
     margin: 0 !important;
+    cursor: pointer;
 }
 
 .l-table_edit {
-    color: green;
+    color: #00c500;
 }
 
 .l-table_del {
     color: red;
+}
+
+.l-table_edit:hover {
+    color: #00b300;
+}
+
+.l-table_del:hover {
+    color: #e60000;
 }
 
 

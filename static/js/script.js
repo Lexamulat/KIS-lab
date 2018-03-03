@@ -11,5 +11,14 @@ function edit(id) {
 }
 
 function del(id) {
-    console.log(id)
+    let md = $('#modalDel')
+    let ok = $('#modalDel .ok')
+
+    md.modal('open');
+    ok.unbind("click");
+
+    $(ok).click(function() {
+        Materialize.toast(`Delete ${id}`, 4000)
+    });
+
 }

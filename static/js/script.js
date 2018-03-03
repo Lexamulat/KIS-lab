@@ -6,8 +6,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }, false);
 
-function edit(id) {
-    console.log(id)
+function edit(id, name_old, url_old) {
+    let md = $('#modalEdit')
+    let ok = $('#modalEdit .ok')
+    let name = $('#modalEdit_name')
+    let url = $('#modalEdit_url')
+
+    name.val(name_old)
+    url.val(url_old)
+    Materialize.updateTextFields();
+
+    md.modal('open');
+    ok.unbind("click");
+
+    $(ok).click(function() {
+        Materialize.toast(`Edit ${id}`, 4000)
+    });
 }
 
 function del(id) {
@@ -17,8 +31,8 @@ function del(id) {
     md.modal('open');
     ok.unbind("click");
 
+
     $(ok).click(function() {
         Materialize.toast(`Delete ${id}`, 4000)
     });
-
 }

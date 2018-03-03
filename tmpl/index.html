@@ -10,7 +10,7 @@
     <title>Lab 4</title>
 
     <!-- Materialize -->
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/materialize.css">
     <script src="/static/js/materialize.js"></script>
 
     <!-- Lab 4 -->
@@ -20,11 +20,36 @@
 </head>
 
 <body>
-    <ul>
-        {{range $name := . }}
-        <li>{{ $name }}</li>
-        {{end}}
-    </ul>
+
+    <div class="container l-container">
+        <div class="row">
+            <!-- Table -->
+            <div class="col s8 l-table">
+                <div>
+
+                    <ul class="l-table_elem l-table_elem-header">
+                        <li>ID</li>
+                        <li>NAME</li>
+                        <li>URL</li>
+                    </ul>
+
+                    {{range $name := . }}
+                    <ul class="l-table_elem">
+                        <li>ID</li>
+                        <li>{{ $name }}</li>
+                        <li>URL</li>
+                    </ul>
+                    {{end}}
+                </div>
+            </div>
+            <!-- Log -->
+            <div class="col s4 l-log">
+                sdfsdfg
+            </div>
+
+        </div>
+    </div>
+
 </body>
 
 </html>

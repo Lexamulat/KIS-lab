@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     //initialize all modals           
     $('.modal').modal();
 
+    // INSERT
+    let InsertOK = $('#modalInsert .ok')
+
+    $(InsertOK).click(function() {
+        let name = $("#modalInsert_name").val()
+        let url = $("#modalInsert_name").val()
+        Materialize.toast(`Insert "${name}"`, 4000)
+    });
+
 }, false);
 
 function edit(id, name_old, url_old) {

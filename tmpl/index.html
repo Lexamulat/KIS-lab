@@ -26,9 +26,7 @@
 
         <!-- HEADER -->
         <div class="l-header">
-            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Insert</a>
-            <a class="waves-effect waves-light btn">UPDATE</a>
-            <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a>
+            <a class="waves-effect waves-light btn modal-trigger" href="#modalInsert">Insert</a>
 
             <div class="input-field">
                 <input id="icon_prefix" type="text" class="validate">
@@ -92,7 +90,7 @@
     <!-- EDIT -->
     <div id="modalEdit" class="modal">
         <div class="modal-content">
-            <h5>Изменение записи</h5>
+            <h5>Изменение категории</h5>
 
             <div class="row">
                 <div class="input-field col s12">
@@ -102,6 +100,32 @@
                 <div class="input-field col s12">
                     <input value="" id="modalEdit_url" type="text" class="validate">
                     <label class="active" for="modalEdit_url">Путь категории</label>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <center>
+                <a href="#!" class="modal-action modal-close waves-effect red btn">Отмена</a>
+                <a href="#!" class="modal-action modal-close waves-effect green btn ok">Сохранить</a>
+            </center>
+        </div>
+    </div>
+
+    <!-- INSERT -->
+    <div id="modalInsert" class="modal">
+        <div class="modal-content">
+            <h5>Создание категории</h5>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input value="" id="modalInsert_name" type="text" class="validate">
+                    <label class="active" for="modalInsert_name">Имя категории</label>
+                </div>
+                <div class="input-field col s12">
+                    <input value="" id="modalInsert_url" type="text" class="validate">
+                    <label class="active" for="modalInsert_url">Путь категории</label>
                 </div>
             </div>
 

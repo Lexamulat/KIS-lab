@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
         Materialize.toast(`Insert "${name}"`, 4000)
     });
 
+
+    // Search
+    let Search = $('#search')
+
+    $(Search).on('input', function() {
+        Materialize.toast(`Search "${Search.val()}"`, 1000)
+    });
+
 }, false);
 
 function edit(id, name_old, url_old) {

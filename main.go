@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 	sqlite "github.com/mattn/go-sqlite3" // Драйвер для работы со SQLite3
 	//home/federal/go/src/github.com/gitGUAP/KIS-lab4
+	h "github.com/gitGUAP/KIS-lab4/handlers"
 )
 
 // DB указатель на соединение с базой данных
@@ -92,6 +93,8 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+	h.pr()
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	sql.Register("sqlite3_custom", &sqlite.SQLiteDriver{

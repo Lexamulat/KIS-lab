@@ -1,5 +1,6 @@
 package main
-//  
+
+//
 import (
 	"database/sql" // Интерфейс для работы со SQL-like БД
 	"encoding/json"
@@ -24,7 +25,9 @@ type DBCategory struct {
 }
 
 func GoToLower(str string, find string) bool {
-	return true
+	str = strings.ToLower(str)
+	find = strings.ToLower(find)
+	return strings.Index(str, find) != -1
 }
 
 func GetIndex(w http.ResponseWriter, r *http.Request) {
@@ -51,9 +54,8 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 	bodyString := string(bodyBytes)
 
 	qry := fmt.Sprintf(`SELECT * FROM Category WHERE 
-		GoToLower(name_cat, '%s') VALUES (TRUE)`, strings.ToLower(bodyString))
+		GoToLower(name_cat, '%s') = 1`, strings.ToLower(bodyString))
 
-	fmt.Printf(qry)
 	rows, err := DB.Query(qry)
 	if err != nil {
 		log.Fatal(err)

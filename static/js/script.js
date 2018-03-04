@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${val.name}</td>
                 <td>${val.url}</td>
                 <td>
-                    <i class="material-icons left l-table_edit" onclick="edit(${val.id}, ${val.name}, ${val.url})">edit</i>
+                    <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
                     <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
                 </td>
             </tr>
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${val.name}</td>
                     <td>${val.url}</td>
                     <td>
-                        <i class="material-icons left l-table_edit" onclick="edit(${val.id}, ${val.name}, ${val.url})">edit</i>
+                        <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
                         <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
                     </td>
                 </tr>
@@ -63,9 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 list.append(el)
             });
 
+            Materialize.toast(`Найдено: ${data.length}`, 2000)
+
         }, "json");
 
-        Materialize.toast(`Search "${t}"`, 1000)
     });
 
 }, false);

@@ -1,31 +1,14 @@
 "use strict";
 
-$.postJSON = function(url, data, func) { $.post(url + (url.indexOf("?") == -1 ? "?" : "&") + "callback=?", data, func, "json"); }
 
 document.addEventListener('DOMContentLoaded', function() {
     $('.modal').modal();
 
     // Get all rows
     $.getJSON("list", function(data) {
-        let list = $("#l-table_list")
-
-        $.each(data, function(key, val) {
-            let el = `
-            <tr>
-                <td>${val.id}</td>
-                <td>${val.name}</td>
-                <td>${val.url}</td>
-                <td>
-                    <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
-                    <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
-                </td>
-            </tr>
-            `
-
-            list.append(el)
-        });
-
+        updateList(data)
     });
+   
 
     // INSERT
     let InsertOK = $('#modalInsert .ok')
@@ -44,27 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let t = Search.val()
 
         $.post("search", t, function(data, textStatus) {
-            let list = $("#l-table_list")
-            list.empty()
-
-            $.each(data, function(key, val) {
-                let el = `
-                <tr>
-                    <td>${val.id}</td>
-                    <td>${val.name}</td>
-                    <td>${val.url}</td>
-                    <td>
-                        <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
-                        <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
-                    </td>
-                </tr>
-                `
-
-                list.append(el)
-            });
-
+            updateList(data)
             Materialize.toast(`Найдено: ${data.length}`, 2000)
-
         }, "json");
 
     });
@@ -97,7 +61,34 @@ function del(id) {
     ok.unbind("click");
 
 
-    $(ok).click(function() {
-        Materialize.toast(`Delete ${id}`, 4000)
+    $(ok).click(function() {       
+        $.post("del", id.toString(), function(data, textStatus) {
+
+            $.getJSON("list", function(data) {
+                updateList(data)
+            });
+
+            Materialize.toast(`Удалено: ${data}`, 2000)
+        }, "text");       
+    });
+}
+
+function updateList(data) {
+    let list = $("#l-table_list")
+
+    $.each(data, function(key, val) {
+        let el = `
+        <tr>
+            <td>${val.id}</td>
+            <td>${val.name}</td>
+            <td>${val.url}</td>
+            <td>
+                <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
+                <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
+            </td>
+        </tr>
+        `
+
+        list.append(el)
     });
 }

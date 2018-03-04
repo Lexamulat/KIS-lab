@@ -94,7 +94,7 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	h.pr()
+	h.Pr()
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	sql.Register("sqlite3_custom", &sqlite.SQLiteDriver{

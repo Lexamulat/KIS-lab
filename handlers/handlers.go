@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func pr() {
+func Pr() {
 
 	fmt.Println(124)
 }

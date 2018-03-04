@@ -5,18 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     $('.modal').modal();
 
     // Get all rows
-    $.getJSON("list", function(data) {
-        updateList(data)
-    });
+    updateList()
    
 
     // INSERT
     let InsertOK = $('#modalInsert .ok')
 
     $(InsertOK).click(function() {
-        let name = $("#modalInsert_name").val()
-        let url = $("#modalInsert_url").val()
-        Materialize.toast(`Insert "${name}"`, 4000)
+        let out = {
+            name_cat: $("#modalInsert_name").val(),
+            url_cat: $("#modalInsert_url").val()
+        }
+
+        $.post("insert", JSON.stringify(out), function(data, textStatus) {
+            Materialize.toast(`Добавлено: ${data}`, 4000)
+
+            updateList()
+        }, "json");      
     });
 
 
@@ -27,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let t = Search.val()
 
         $.post("search", t, function(data, textStatus) {
-            updateList(data)
+            updateListFromData(data)
             Materialize.toast(`Найдено: ${data.length}`, 2000)
         }, "json");
 
@@ -64,17 +69,24 @@ function del(id) {
     $(ok).click(function() {       
         $.post("del", id.toString(), function(data, textStatus) {
 
-            $.getJSON("list", function(data) {
-                updateList(data)
-            });
+            updateList()
 
             Materialize.toast(`Удалено: ${data}`, 2000)
         }, "text");       
     });
 }
 
-function updateList(data) {
+
+function updateList() {
+
+    $.post("search", t, function(data, textStatus) {
+        updateList(data_list)
+    }, "json");
+}
+
+function updateListFromData(data) {
     let list = $("#l-table_list")
+    list.empty()
 
     $.each(data, function(key, val) {
         let el = `

@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 	sqlite "github.com/mattn/go-sqlite3" // Драйвер для работы со SQLite3
 	//home/federal/go/src/github.com/gitGUAP/KIS-lab4
+	"github.com/buger/jsonparser"
 	h "github.com/gitGUAP/KIS-lab4/handlers"
 )
 
@@ -37,6 +38,35 @@ func GoToLower(str string, find string) bool {
 	str = strings.ToLower(str)
 	find = strings.ToLower(find)
 	return strings.Index(str, find) != -1
+}
+
+func Insert(w http.ResponseWriter, r *http.Request) {
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	name, err := jsonparser.GetString(body, "name_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	url, err := jsonparser.GetString(body, "url_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := h.DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	affected, _ := res.RowsAffected()
+
+	outJSON, _ := json.Marshal(el)
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+
 }
 
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
@@ -96,7 +126,11 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 // }
 
 func GetList(w http.ResponseWriter, r *http.Request) {
-	rows, err := h.DB.Query(`SELECT * FROM Category`)
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyString := string(bodyBytes)
+
+	rows, err := h.DB.Query(`SELECT * FROM Category ORDER BY name_cat` + bodyString)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -139,9 +173,10 @@ func main() {
 	s := http.StripPrefix("/static/", http.FileServer(http.Dir("./static/")))
 
 	router.HandleFunc("/", h.GetIndex).Methods("GET")
-	router.HandleFunc("/list", GetList).Methods("GET")
+	router.HandleFunc("/list", GetList).Methods("POST")
 	router.HandleFunc("/search", GetSearch).Methods("POST")
 	router.HandleFunc("/del", DeleteItem).Methods("POST")
+	router.HandleFunc("/insert", Insert).Methods("POST")
 	router.PathPrefix("/static/").Handler(s)
 
 	log.Println("Listening...")

@@ -5,6 +5,7 @@ import (
 	"database/sql" // Интерфейс для работы со SQL-like БД
 	"encoding/json"
 	"fmt" // Шаблоны для выдачи html страниц
+	"html/template"
 	"io/ioutil"
 	"log"      // Вывод информации в консоль
 	"net/http" // Для запуска HTTP сервера
@@ -13,7 +14,6 @@ import (
 	"github.com/gorilla/mux"
 	sqlite "github.com/mattn/go-sqlite3" // Драйвер для работы со SQLite3
 	//home/federal/go/src/github.com/gitGUAP/KIS-lab4
-	h "/github.com/gitGUAP/KIS-lab4/handlers"
 )
 
 // DB указатель на соединение с базой данных
@@ -52,6 +52,25 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 
 	outJSON, _ := json.Marshal(el)
 	fmt.Fprintf(w, string(outJSON))
+}
+
+func GetIndex(w http.ResponseWriter, r *http.Request) {
+
+	rows, err := DB.Query(`SELECT * FROM Category`)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tmpl, _ := template.ParseFiles("tmpl/index.html")
+
+	el := []DBCategory{}
+	for rows.Next() {
+		var temp DBCategory
+		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
+		el = append(el, temp)
+	}
+
+	tmpl.Execute(w, el)
 }
 
 func GetList(w http.ResponseWriter, r *http.Request) {
@@ -94,7 +113,7 @@ func main() {
 	router := mux.NewRouter()
 	s := http.StripPrefix("/static/", http.FileServer(http.Dir("./static/")))
 
-	h.router.HandleFunc("/", GetIndex).Methods("GET")
+	router.HandleFunc("/", GetIndex).Methods("GET")
 	router.HandleFunc("/list", GetList).Methods("GET")
 	router.HandleFunc("/search", GetSearch).Methods("POST")
 	router.PathPrefix("/static/").Handler(s)

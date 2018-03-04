@@ -1,5 +1,5 @@
 package main
-
+//  
 import (
 	"database/sql"  // Интерфейс для работы со SQL-like БД
 	"html/template" // Шаблоны для выдачи html страниц

@@ -1,6 +1,7 @@
 package main
 
 //
+//
 import (
 	"database/sql" // Интерфейс для работы со SQL-like БД
 	"encoding/json"

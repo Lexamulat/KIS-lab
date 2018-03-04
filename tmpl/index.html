@@ -48,8 +48,8 @@
                             <th>Действия</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {{range $name := . }}
+                    <tbody id="l-table_list">
+                        <!-- {{range $name := . }}
                         <tr>
                             <td>{{ $name.ID }}</td>
                             <td>{{ $name.Name }}</td>
@@ -59,14 +59,10 @@
                                 <i class="material-icons right l-table_del" onclick="del({{ $name.ID }})">delete</i>
                             </td>
                         </tr>
-                        {{end}}
+                        {{end}} -->
                     </tbody>
                 </table>
             </div>
-
-
-            <!-- Log -->
-            <ul class="l-log"></ul>
 
         </div>
     </div>

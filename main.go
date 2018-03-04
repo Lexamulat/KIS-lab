@@ -1,65 +1,121 @@
 package main
 //  
 import (
-	"database/sql"  // Интерфейс для работы со SQL-like БД
+	"database/sql" // Интерфейс для работы со SQL-like БД
+	"encoding/json"
+	"fmt"
 	"html/template" // Шаблоны для выдачи html страниц
-	"log"           // Вывод информации в консоль
-	"net/http"      // Для запуска HTTP сервера
+	"io/ioutil"
+	"log"      // Вывод информации в консоль
+	"net/http" // Для запуска HTTP сервера
+	"strings"
 
-	_ "github.com/mattn/go-sqlite3" // Драйвер для работы со SQLite3
+	"github.com/gorilla/mux"
+	sqlite "github.com/mattn/go-sqlite3" // Драйвер для работы со SQLite3
 )
 
 // DB указатель на соединение с базой данных
 var DB *sql.DB
 
 type DBCategory struct {
-	ID   int
-	Name string
-	URL  string
+	ID   int    `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+	URL  string `json:"url,omitempty"`
 }
 
-// Реализация обработчика запроса
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	// Выполнение запроса к базе данных
+func GoToLower(str string, find string) bool {
+	return true
+}
+
+func GetIndex(w http.ResponseWriter, r *http.Request) {
+
 	rows, err := DB.Query(`SELECT * FROM Category`)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Чтение шаблона из файла
 	tmpl, _ := template.ParseFiles("tmpl/index.html")
 
-	// Создание массива для снятия слепка с базы данных,
 	el := []DBCategory{}
-	// Итерируемся по всем строкам, который вернул запрос SQLite
 	for rows.Next() {
 		var temp DBCategory
 		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
-		// Записывает возвращенные данные в слепок
 		el = append(el, temp)
 	}
 
-	// Вписываем данные в шаблон HTML страницы, дл отдачи пользователю
 	tmpl.Execute(w, el)
 }
 
-func main() {
-	var err error
-	// Открытие соединения с БД SQLite3.db
-	DB, err = sql.Open("sqlite3", "./sqlite.db")
-	// Проверка установки соединения
+func GetSearch(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyString := string(bodyBytes)
+
+	qry := fmt.Sprintf(`SELECT * FROM Category WHERE 
+		GoToLower(name_cat, '%s') VALUES (TRUE)`, strings.ToLower(bodyString))
+
+	fmt.Printf(qry)
+	rows, err := DB.Query(qry)
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Закрытие соединения с БД по выходу из функции main
+
+	el := []DBCategory{}
+	for rows.Next() {
+		var temp DBCategory
+		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
+		el = append(el, temp)
+	}
+
+	outJSON, _ := json.Marshal(el)
+	fmt.Fprintf(w, string(outJSON))
+}
+
+func GetList(w http.ResponseWriter, r *http.Request) {
+	rows, err := DB.Query(`SELECT * FROM Category`)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	el := []DBCategory{}
+	for rows.Next() {
+		var temp DBCategory
+		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
+		el = append(el, temp)
+	}
+
+	outJSON, _ := json.Marshal(el)
+	fmt.Fprintf(w, string(outJSON))
+}
+
+func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	sql.Register("sqlite3_custom", &sqlite.SQLiteDriver{
+		ConnectHook: func(conn *sqlite.SQLiteConn) error {
+			if err := conn.RegisterFunc("GoToLower", GoToLower, true); err != nil {
+				return err
+			}
+			return nil
+		},
+	})
+
+	var err error
+
+	DB, err = sql.Open("sqlite3_custom", "./sqlite.db")
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer DB.Close()
 
-	// Установка обработчика запроса по данному запросу
-	fs := http.FileServer(http.Dir("static"))
-	http.HandleFunc("/", indexHandler)
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	router := mux.NewRouter()
+	s := http.StripPrefix("/static/", http.FileServer(http.Dir("./static/")))
+
+	router.HandleFunc("/", GetIndex).Methods("GET")
+	router.HandleFunc("/list", GetList).Methods("GET")
+	router.HandleFunc("/search", GetSearch).Methods("POST")
+	router.PathPrefix("/static/").Handler(s)
 
 	log.Println("Listening...")
 	// Запуск локального сервека на 8080 порту
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", router))
 }

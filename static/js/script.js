@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // Search
+    // SEARCH
     let Search = $('#search')
 
     $(Search).on('input', function() {
@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
+
+    // SORT
+    $("#l-list_sort-click").click(function() {
+        updateList()
+    });
 }, false);
 
 function edit(id, name_old, url_old) {

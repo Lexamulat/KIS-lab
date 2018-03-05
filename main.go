@@ -63,7 +63,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	}
 	affected, _ := res.RowsAffected()
 
-	outJSON, _ := json.Marshal(el)
+	// outJSON, _ := json.Marshal(el)
 
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 

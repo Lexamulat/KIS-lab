@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $(Search).on('input', function() {
         let t = Search.val()
 
-        $.post("search", JSON.stringify(t), function(data, textStatus) {
+        $.post("search", t.toString(), function(data, textStatus) {
             updateListFromData(data)
             Materialize.toast(`Найдено: ${data.length}`, 2000)
         }, "json");
@@ -99,6 +99,7 @@ function del(id) {
 function updateList() {
     let switchVal = $('#l-list_sort').is(':checked')
     let sortText = switchVal ? "DESC" : "ASC"
+
 
     $.post("list", sortText, function(data, textStatus) {
         updateListFromData(data)

@@ -157,7 +157,7 @@ func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
 			log.Printf("%q: %s\n", err, sqlStmt)
 
 		}
-
+		//
 	} else {
 
 		sqlStmt := `DROP TABLE University`

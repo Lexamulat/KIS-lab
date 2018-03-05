@@ -1,74 +1,61 @@
 "use strict";
 
-$.postJSON = function(url, data, func) { $.post(url + (url.indexOf("?") == -1 ? "?" : "&") + "callback=?", data, func, "json"); }
 
 document.addEventListener('DOMContentLoaded', function() {
     $('.modal').modal();
 
     // Get all rows
-    $.getJSON("list", function(data) {
-        let list = $("#l-table_list")
+    updateList()
 
-        $.each(data, function(key, val) {
-            let el = `
-            <tr>
-                <td>${val.id}</td>
-                <td>${val.name}</td>
-                <td>${val.url}</td>
-                <td>
-                    <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
-                    <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
-                </td>
-            </tr>
-            `
-
-            list.append(el)
-        });
-
-    });
 
     // INSERT
     let InsertOK = $('#modalInsert .ok')
 
     $(InsertOK).click(function() {
-        let name = $("#modalInsert_name").val()
-        let url = $("#modalInsert_url").val()
-        Materialize.toast(`Insert "${name}"`, 4000)
+        let out = {
+            name_cat: $("#modalInsert_name").val(),
+            url_cat: $("#modalInsert_url").val()
+        }
+
+        $.post("insert", JSON.stringify(out), function(data, textStatus) {
+            Materialize.toast(`Добавлено: ${data}`, 4000)
+
+            updateList()
+        }, "json");
     });
 
 
-    // Search
+    // SEARCH
     let Search = $('#search')
 
     $(Search).on('input', function() {
         let t = Search.val()
 
-        $.post("search", t, function(data, textStatus) {
-            let list = $("#l-table_list")
-            list.empty()
-
-            $.each(data, function(key, val) {
-                let el = `
-                <tr>
-                    <td>${val.id}</td>
-                    <td>${val.name}</td>
-                    <td>${val.url}</td>
-                    <td>
-                        <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
-                        <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
-                    </td>
-                </tr>
-                `
-
-                list.append(el)
-            });
-
+        $.post("search", JSON.stringify(t), function(data, textStatus) {
+            updateListFromData(data)
             Materialize.toast(`Найдено: ${data.length}`, 2000)
-
         }, "json");
 
     });
 
+
+    // SORT
+    $("#l-list_sort-click").click(function() {
+        updateList()
+    });
+
+    // CREATE
+    $("#l-create").click(function() {
+        $.post("table", "create", function(data, textStatus) {
+            Materialize.toast(`Create: ${data}`, 3000)
+        }, "json");
+    });
+    // DROP
+    $("#l-drop").click(function() {
+        $.post("table", "drop", function(data, textStatus) {
+            Materialize.toast(`Drop: ${data}`, 3000)
+        }, "json");
+    });
 }, false);
 
 function edit(id, name_old, url_old) {
@@ -85,6 +72,7 @@ function edit(id, name_old, url_old) {
     ok.unbind("click");
 
     $(ok).click(function() {
+        updateList()
         Materialize.toast(`Edit ${id}`, 4000)
     });
 }
@@ -98,6 +86,42 @@ function del(id) {
 
 
     $(ok).click(function() {
-        Materialize.toast(`Delete ${id}`, 4000)
+        $.post("del", id.toString(), function(data, textStatus) {
+
+            updateList()
+
+            Materialize.toast(`Удалено: ${data}`, 2000)
+        }, "text");
+    });
+}
+
+
+function updateList() {
+    let switchVal = $('#l-list_sort').is(':checked')
+    let sortText = switchVal ? "DESC" : "ASC"
+
+    $.post("list", sortText, function(data, textStatus) {
+        updateListFromData(data)
+    }, "json");
+}
+
+function updateListFromData(data) {
+    let list = $("#l-table_list")
+    list.empty()
+
+    $.each(data, function(key, val) {
+        let el = `
+        <tr>
+            <td>${val.id}</td>
+            <td>${val.name}</td>
+            <td>${val.url}</td>
+            <td>
+                <i class="material-icons left l-table_edit" onclick="edit(${val.id}, '${val.name}', '${val.url}')">edit</i>
+                <i class="material-icons right l-table_del" onclick="del(${val.id})">delete</i>
+            </td>
+        </tr>
+        `
+
+        list.append(el)
     });
 }

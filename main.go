@@ -155,7 +155,7 @@ func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			status = "failed"
 			log.Printf("%q: %s\n", err, sqlStmt)
-			return
+
 		}
 
 	} else {
@@ -165,7 +165,7 @@ func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			status = "failed"
 			log.Printf("%q: %s\n", err, sqlStmt)
-			return
+
 		}
 
 	}

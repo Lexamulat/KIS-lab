@@ -43,6 +43,19 @@ document.addEventListener('DOMContentLoaded', function() {
     $("#l-list_sort-click").click(function() {
         updateList()
     });
+
+    // CREATE
+    $("#l-create").click(function() {
+        $.post("table", "create", function(data, textStatus) {
+            Materialize.toast(`Create: ${data}`, 3000)
+        }, "json");
+    });
+    // DROP
+    $("#l-drop").click(function() {
+        $.post("table", "drop", function(data, textStatus) {
+            Materialize.toast(`Drop: ${data}`, 3000)
+        }, "json");
+    });
 }, false);
 
 function edit(id, name_old, url_old) {

@@ -26,11 +26,23 @@
 
         <!-- HEADER -->
         <div class="l-header">
-            <a class="waves-effect waves-light btn-large modal-trigger  green darken-1" href="#modalInsert">Insert</a>
+            <a class="waves-effect waves-light btn-large modal-trigger green darken-1" href="#modalInsert">Insert</a>
+
+            <a class="waves-effect waves-light btn modal-trigger green darken-2">CREATE</a>
+            <a class="waves-effect waves-light btn modal-trigger red">DROP</a>
 
             <div class="input-field">
                 <input id="search" type="text" class="validate">
                 <label for="search">Search</label>
+            </div>
+
+            <div class="switch">
+                <label>
+                  ASC
+                  <input id="l-list_sort" type="checkbox">
+                  <span id="l-list_sort-click" class="lever"></span>
+                  DESC
+                </label>
             </div>
         </div>
 

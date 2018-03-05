@@ -144,15 +144,33 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
+	status := "success"
 
 	if bodyString == "create" {
-		_, err := h.DB.Query(`create table University (ID integer  primary key autoincrement, Univ_name text, Acronim text, Create_date integer)`)
 
+		sqlStmt := `
+	 create table University (ID integer  primary key autoincrement, Univ_name text, Acronim text, Create_date integer);
+	 `
+		_, err := h.DB.Exec(sqlStmt)
 		if err != nil {
-			log.Fatal(err)
+			status = "failed"
+			log.Printf("%q: %s\n", err, sqlStmt)
+			return
 		}
-	}
 
+	} else {
+
+		sqlStmt := `DROP TABLE University`
+		_, err := h.DB.Exec(sqlStmt)
+		if err != nil {
+			status = "failed"
+			log.Printf("%q: %s\n", err, sqlStmt)
+			return
+		}
+
+	}
+	outJSON, _ := json.Marshal(status)
+	fmt.Fprintf(w, string(outJSON))
 }
 
 func main() {
@@ -188,6 +206,10 @@ func main() {
 	router.HandleFunc("/insert", Insert).Methods("POST")
 	router.PathPrefix("/static/").Handler(s)
 	router.HandleFunc("/table", DeleteOrCreate).Methods("POST")
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Println("Listening...")
 	// Запуск локального сервека на 8080 порту

@@ -79,8 +79,10 @@ function del(id) {
 
 
 function updateList() {
-    $.post("list", function(data, textStatus) {
-        console.log(data)
+    let switchVal = $('#l-list_sort').is(':checked')
+    let sortText = switchVal ? "DESC" : "ASC"
+
+    $.post("list", sortText, function(data, textStatus) {
         updateListFromData(data)
     }, "json");
 }

@@ -1,7 +1,5 @@
 package main
 
-//
-//
 import (
 	"database/sql" // Интерфейс для работы со SQL-like БД
 	"encoding/json"
@@ -63,10 +61,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	}
 	affected, _ := res.RowsAffected()
 
-	// outJSON, _ := json.Marshal(el)
-
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
-
 }
 
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +124,7 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	bodyString := string(bodyBytes)
 
-	rows, err := h.DB.Query(`SELECT * FROM Category ORDER BY name_cat` + bodyString)
+	rows, err := h.DB.Query(`SELECT * FROM Category ORDER BY name_cat ` + bodyString)
 
 	if err != nil {
 		log.Fatal(err)

@@ -72,8 +72,16 @@ function edit(id, name_old, url_old) {
     ok.unbind("click");
 
     $(ok).click(function() {
-        updateList()
-        Materialize.toast(`Edit ${id}`, 4000)
+        let out = {
+            id_cat: id,
+            name_cat: name.val(),
+            url_cat: url.val()
+        }
+
+        $.post("edit", JSON.stringify(out), function(data, textStatus) {
+            updateList()
+            Materialize.toast(`Edit: ${data}`, 4000)
+        }, "text");
     });
 }
 
@@ -86,7 +94,7 @@ function del(id) {
 
 
     $(ok).click(function() {
-        $.post("del", id.toString(), function(data, textStatus) {
+        $.post("del", JSON.stringify(out), function(data, textStatus) {
 
             updateList()
 

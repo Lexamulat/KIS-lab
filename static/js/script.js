@@ -60,6 +60,15 @@ document.addEventListener('DOMContentLoaded', function() {
             Materialize.toast(`Drop: ${data}`, 3000)
         }, "json");
     });
+
+    // RESTORE
+    $("#l-restoreDel").click(function() {
+        $.post("restore", function(data, textStatus) {
+            updateList()
+            Materialize.toast(`Востановлена запись`, 3000)
+        }, "json");
+    });
+
 }, false);
 
 function edit(id, name_old, url_old) {

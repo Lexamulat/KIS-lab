@@ -2,12 +2,14 @@ package handlers
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/buger/jsonparser"
 )
@@ -43,6 +45,120 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, err := DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
+
+	if err == nil {
+		affected, _ = res.RowsAffected()
+	}
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}
+
+func GetSearch(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	bodyString := string(bodyBytes)
+
+	qry := fmt.Sprintf(`SELECT * FROM Category WHERE 
+		GoToLower(name_cat, '%s') = 1`, strings.ToLower(bodyString))
+
+	rows, err := DB.Query(qry)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	el := []DBCategory{}
+	for rows.Next() {
+		var temp DBCategory
+		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
+		el = append(el, temp)
+	}
+
+	outJSON, _ := json.Marshal(el)
+	fmt.Fprintf(w, string(outJSON))
+}
+
+func DeleteItem(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	id := string(bodyBytes)
+
+	res, err := DB.Exec("DELETE FROM Category WHERE id_cat = ?", id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	affected, _ := res.RowsAffected()
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}
+
+func GetList(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	sortType := string(bodyBytes)
+	//ASC / DESC
+	rows, err := DB.Query(`SELECT * FROM Category ORDER BY name_cat ` + sortType)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	el := []DBCategory{}
+	for rows.Next() {
+		var temp DBCategory
+		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
+		el = append(el, temp)
+	}
+
+	outJSON, _ := json.Marshal(el)
+	fmt.Fprintf(w, string(outJSON))
+}
+
+func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	action := string(bodyBytes)
+	status := "success"
+
+	if action == "create" {
+
+		sqlStmt := `
+	 CREATE TABLE University (ID integer  primary key autoincrement, Univ_name text, Acronim text, Create_date integer);
+	 `
+		_, err := DB.Exec(sqlStmt)
+		if err != nil {
+			status = "failed"
+		}
+
+	} else {
+
+		sqlStmt := `DROP TABLE University`
+		_, err := DB.Exec(sqlStmt)
+		if err != nil {
+			status = "failed"
+		}
+
+	}
+	outJSON, _ := json.Marshal(status)
+	fmt.Fprintf(w, string(outJSON))
+}
+
+func Edit(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+	affected := int64(0)
+	id, err := jsonparser.GetInt(body, "id_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(id)
+	name, err := jsonparser.GetString(body, "name_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(name)
+	url, err := jsonparser.GetString(body, "url_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(url)
+	res, err := DB.Exec("UPDATE Category SET name_cat = '?', url_cat='?'  WHERE id_cat = ?",
+		name, url, strconv.Itoa(int(id)))
 
 	if err == nil {
 		affected, _ = res.RowsAffected()

@@ -19,7 +19,7 @@ body {
 }
 
 .l-list_top .list-group {
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: scroll;
 }
 
@@ -37,7 +37,7 @@ body {
     margin-bottom: 5px;
 }
 
-.l-list_top .list-group button {
+.l-button_action {
     margin-left: 5px;
     float: right;
     display: flex;
@@ -45,7 +45,7 @@ body {
     justify-content: center;
 }
 
-.l-list_top .list-group button svg {
+.l-button_action svg {
     height: 14px;
     width: 14px;
     fill: #fff;
@@ -55,5 +55,38 @@ body {
 /* MODELS */
 
 .l-list_models {
-    flex-grow: 2;
+    flex-grow: 1;
+}
+
+.l-model_item {
+    display: flex;
+}
+
+.l-model_item-img {
+    margin-right: 2%;
+}
+
+.l-model_item-about {
+    flex-grow: 1;
+}
+
+.l-list_model {
+    margin-top: 10px;
+}
+
+
+/* CREATE */
+
+.l-button_create {
+    margin-left: 5px;
+    float: right;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.l-button_create svg {
+    height: 64px;
+    width: 64px;
+    fill: #fff;
 }

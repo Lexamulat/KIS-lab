@@ -4,38 +4,49 @@ import (
 	"database/sql"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+
+	"github.com/buger/jsonparser"
 )
 
 var DB *sql.DB
 
-func Pr() {
-
-	fmt.Println(124)
-}
-
 type DBCategory struct {
-	ID   int    `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-	URL  string `json:"url,omitempty"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	URL  string `json:"url"`
 }
 
 func GetIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl, _ := template.ParseFiles("tmpl/index.html")
 
-	rows, err := DB.Query(`SELECT * FROM Category`)
+	tmpl.Execute(w, nil)
+}
+
+func Insert(w http.ResponseWriter, r *http.Request) {
+	affected := int64(0)
+	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	tmpl, _ := template.ParseFiles("tmpl/index.html")
-
-	el := []DBCategory{}
-	for rows.Next() {
-		var temp DBCategory
-		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
-		el = append(el, temp)
+	name, err := jsonparser.GetString(body, "name_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	url, err := jsonparser.GetString(body, "url_cat")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	tmpl.Execute(w, el)
+	res, err := DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
+
+	if err == nil {
+		affected, _ = res.RowsAffected()
+	}
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }

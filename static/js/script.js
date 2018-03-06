@@ -65,7 +65,11 @@ document.addEventListener('DOMContentLoaded', function() {
     $("#l-restoreDel").click(function() {
         $.post("restore", function(data, textStatus) {
             updateList()
-            Materialize.toast(`Востановлена запись`, 3000)
+            if (data == "success") {
+                Materialize.toast(`Востановлена запись`, 3000)
+            } else {
+                Materialize.toast(`Нет записей для восстановления`, 3000)
+            }
         }, "json");
     });
 

@@ -48,6 +48,7 @@ func main() {
 	router.HandleFunc("/insert", h.Insert).Methods("POST")
 	router.HandleFunc("/table", h.DeleteOrCreate).Methods("POST")
 	router.HandleFunc("/edit", h.Edit).Methods("POST")
+	router.HandleFunc("/restore", h.Restore).Methods("POST")
 
 	router.PathPrefix("/static/").Handler(s)
 

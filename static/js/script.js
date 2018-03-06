@@ -18,7 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         $.post("insert", JSON.stringify(out), function(data, textStatus) {
-            Materialize.toast(`Добавлено: ${data}`, 4000)
+            if (data == 0) {
+                Materialize.toast(`Ошибка добавления`, 2000)
+            } else {
+                Materialize.toast(`Добавлено: ${data}`, 4000)
+            }
 
             updateList()
         }, "json");

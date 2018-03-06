@@ -40,7 +40,7 @@ func GoToLower(str string, find string) bool {
 
 func Insert(w http.ResponseWriter, r *http.Request) {
 
-	var affected int64
+	affected := int64(0)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
@@ -57,10 +57,9 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
 
-	if err != nil {
-		//affected = 0
+	if err == nil {
+		affected, _ = res.RowsAffected()
 	}
-	affected, _ = res.RowsAffected()
 
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }

@@ -58,7 +58,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	res, err := h.DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
 
 	if err != nil {
-		affected = 0
+		//affected = 0
 	}
 	affected, _ = res.RowsAffected()
 

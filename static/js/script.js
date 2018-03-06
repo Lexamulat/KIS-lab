@@ -84,7 +84,11 @@ function edit(id, name_old, url_old) {
 
         $.post("edit", JSON.stringify(out), function(data, textStatus) {
             updateList()
-            Materialize.toast(`Edit: ${data}`, 4000)
+            if (data == 0) {
+                Materialize.toast(`Ошибка добавления`, 2000)
+            } else {
+                Materialize.toast(`Отредактированно: ${data}`, 4000)
+            }
         }, "text");
     });
 }

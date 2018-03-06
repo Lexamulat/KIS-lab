@@ -175,7 +175,7 @@ func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
 
 func Edit(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
-
+	affected := int64(0)
 	id, err := jsonparser.GetInt(body, "id_cat")
 	if err != nil {
 		log.Fatal(err)
@@ -193,12 +193,13 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(url)
 	q := "update Category set name_cat = '" + name + "', url_cat='" + url + "'  where id_cat = " + strconv.Itoa(int(id))
 	fmt.Println(q)
-	_, err = h.DB.Exec(q)
+	res, err := h.DB.Exec(q)
 
-	if err != nil {
-		log.Fatal(err)
+	if err == nil {
+		affected, _ = res.RowsAffected()
 	}
 
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }
 
 func main() {
@@ -235,50 +236,6 @@ func main() {
 	router.PathPrefix("/static/").Handler(s)
 	router.HandleFunc("/table", DeleteOrCreate).Methods("POST")
 	router.HandleFunc("/edit", Edit).Methods("POST")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// name := "6543564"
-	// id := "12"
-
-	// //_, err = db.Exec("insert into foo(id, name) values(1, 'foo'), (2, 'bar'), (3, 'baz')")
-
-	// _, err = h.DB.Exec("update Category set name_cat = '" + name + "' where id_cat = " + id)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	//res, err := h.DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
-	// _, err = h.DB.Exec("update Category set (name_cat) where id_cat=(id) VALUES(?,?)", name, id)
-
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// row := h.DB.QueryRow(`update Category set name_cat= :name where id_cat= :id`, sql.Named("name", name), sql.Named("id", id))
-	// if row == nil {
-	// 	if err != nil {
-	// 		h.Pr()
-	// 		log.Fatal(err)
-	// 	}
-	// }
-	// row := h.DB.QueryRow(`select id, extra from foo where id = :id and extra = :extra`, sql.Named("id", 1), sql.Named("extra", "foo"))
-	// if row == nil {
-
-	// _, err = h.DB.Query("UPDATE Category set name_cat='name'")
-
-	// if err != nil {
-	// 	fmt.Println("err")
-	// 	log.Fatal(err)
-	// }
-
-	// _, err = h.DB.Query(`UPDATE Category set name_cat=` + name + `where id_cat=` + id)
-	// if err != nil {
-	// 	fmt.Println("err")
-	// 	log.Fatal(err)
-	// }
 
 	log.Println("Listening...")
 	// Запуск локального сервека на 8080 порту

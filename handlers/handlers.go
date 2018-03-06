@@ -78,6 +78,21 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(outJSON))
 }
 
+func Restore(w http.ResponseWriter, r *http.Request) {
+	status := "success"
+	if DeletedCategory.ID == 0 {
+		status = "failed"
+	} else {
+		_, err := DB.Exec("INSERT INTO Category(id_cat,name_cat, url_cat) VALUES(?,?,?)", DeletedCategory.ID, DeletedCategory.Name, DeletedCategory.URL)
+		if err != nil {
+			log.Fatal(err)
+		}
+		DeletedCategory.ID = 0
+	}
+	outJSON, _ := json.Marshal(status)
+	fmt.Fprintf(w, string(outJSON))
+}
+
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	id := string(bodyBytes)

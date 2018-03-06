@@ -22,6 +22,8 @@ type DBCategory struct {
 	URL  string `json:"url"`
 }
 
+var DeletedCategory DBCategory
+
 func GetIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("tmpl/index.html")
 
@@ -79,6 +81,16 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	id := string(bodyBytes)
+
+	rows, err := DB.Query(`SELECT * FROM Category WHERE id_cat = ?`, id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		rows.Scan(&DeletedCategory.ID, &DeletedCategory.Name, &DeletedCategory.URL)
+	}
 
 	res, err := DB.Exec("DELETE FROM Category WHERE id_cat = ?", id)
 

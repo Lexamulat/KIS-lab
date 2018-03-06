@@ -94,7 +94,7 @@ function del(id) {
 
 
     $(ok).click(function() {
-        $.post("del", JSON.stringify(out), function(data, textStatus) {
+        $.post("del", id.toString(), function(data, textStatus) {
 
             updateList()
 

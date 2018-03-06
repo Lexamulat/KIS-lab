@@ -25,21 +25,30 @@
 
 
     <!-- Create Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="l-createCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление категории</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Название категории</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label ">URL</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary btn-success">Создать</button>
                 </div>
             </div>
         </div>
@@ -64,7 +73,12 @@
     <div class="container-fluid l-container">
         <div class="row justify-content-around">
             <div class="col-4 l-list l-list_top">
-                <h2 class="l-list_lable">Категории</h2>
+                <h2 class="l-list_lable">Категории
+                </h2>
+
+
+
+                <button type="button" class="btn btn-success addbtncat" data-toggle="modal" data-target="#l-createCategory" data-whatever="addCat">+</button>
 
                 <div class="row justify-content-around">
                     <div class="col-11">
@@ -106,7 +120,7 @@
 
             <div class="col-4 l-list l-list_top">
                 <h2 class="l-list_lable">Подкатегории</h2>
-
+                <button type="button" class="btn btn-success addbtncat">+</button>
                 <div class="row justify-content-around">
                     <div class="col-11">
                         <input class="form-control l-list_lable-search" type="search" placeholder="Поиск">
@@ -145,8 +159,8 @@
             <div class="col-11 l-list">
                 <div class="row">
                     <div class="col-4">
-                        <h2 class="l-list_lable">Модели:</h2>
-
+                        <h2 class="l-list_lable"> <button type="button" class="btn btn-success addbtncat">+</button>Модели:</h2>
+                        <!-- <button type="button" class="btn btn-success addbtncat">+</button> -->
                     </div>
 
                     <div class="col-8 input-group">

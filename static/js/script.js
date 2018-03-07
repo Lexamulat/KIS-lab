@@ -4,10 +4,11 @@ $(document).ready(function() {
     
     console.log("start")
     var options =  {
-        content: "Some text", // text of the snackbar
+        content: "added23", // text of the snackbar
         style: "toast", // add a custom class to your snackbar
         timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
     }
+    
     
     // $.snackbar(options);
 
@@ -34,12 +35,14 @@ $(document).ready(function() {
         $.post("insert", JSON.stringify(out), function(data, textStatus) {
 
             if((data)==0){
+                
                 alert("failed");
 
                 // $("#snak").snackbar("show");
 
                 }else{
-                
+                    console.log(options)
+                    $.snackbar(options)
                  //alert("succsess") 
                 //  $("#snak").snackbar("show");
                  

@@ -25,7 +25,8 @@ type DBCategory struct {
 var DeletedCategory DBCategory
 
 func GetIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("tmpl/index.html")
+	// tmpl, _ := template.ParseFiles("tmpl/index.html")
+	tmpl, _ := template.ParseGlob("tmpl/*.html")
 
 	tmpl.Execute(w, nil)
 }

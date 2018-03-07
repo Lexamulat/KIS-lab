@@ -24,40 +24,13 @@
 <body>
 
 
-
-    <span id ="snak"data-toggle=snackbar data-content="This is my awesome snackbar!"></span>
+<!-- 
+    <span id ="snak"data-toggle=snackbar data-content="This is my awesome snackbar!"></span> -->
 
     <!-- <span class="btn btn-material-deeppurple" data-toggle="snackbar" data-content="This is a snackbar! Click to dismiss me." data-timeout="0" data-snackbar-id="snackbar1520432449672">Show or hide a snackbar</span> -->
 
     <!-- Create Category -->
-    <div class="modal fade" id="l-createCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Добавление категории</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div id="CaInsert" class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label  for="modalInsert_name" class="col-form-label">Название категории</label>
-                            <input id="name_cat" type="text" class="form-control" id="modalInsert_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="modalInsert_url" class="col-form-label ">URL</label>
-                            <input id="url_cat" type="text" class="form-control" id="modalInsert_url">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Отмена</button>
-                    <button   data-toggle=snackbar type="button" id="CATADD" class="btn btn-primary btn-success" data-dismiss="modal">Создать</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{template "modals.html"}}
 
 
     <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

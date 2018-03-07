@@ -78,7 +78,7 @@ $(document).ready(function () {
                     <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete">
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                     </button>  
-                    <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory">
+                    <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-whatever=${val.name}>
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                    </button>
                     </div>
@@ -108,6 +108,19 @@ $(document).ready(function () {
                 console.log($(t.currentTarget).parent().attr("data-Catid"))
 
                 // console.log($(t.currentTarget).parent())
+
+
+                $('#l-EditCategory').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget) // Button that triggered the modal
+                    var recipient = button.data('whatever') // Extract info from data-* attributes
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var modal = $(this)
+                    modal.find('.modal-title').text('New message to ' + recipient)
+                    modal.find('.modal-body input').val(recipient)
+                  })
+
+
 
             })
         

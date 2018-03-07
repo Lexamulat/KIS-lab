@@ -78,11 +78,16 @@ $(document).ready(function () {
                     <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete">
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                     </button>  
-                    <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit">
+                    <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory">
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                    </button>
                     </div>
                     `
+
+                    // <button type="button" class="btn btn-success addbtncat" data-toggle="modal" data-target="#l-createCategory" data-whatever="addCat">+</button>
+
+
+
                 list.append(el)
 
 

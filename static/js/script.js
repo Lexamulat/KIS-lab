@@ -75,25 +75,36 @@ $(document).ready(function () {
                 }
                 let el = `
                     <div class="list-group-item list-group-item-action ${flg} ClassCategory" data-CatId=${val.id}>${val.name}
+                    <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete">
+                    <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
+                    </button>  
+                    <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit">
+                    <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
+                   </button>
                     </div>
                     `
                 list.append(el)
 
 
                 ActiveFlag = false
-            });
+            })
 
-            $(".list-group-item").click((t) => {
+            $(".ClassCategory").click((t) => {
         
-                console.log($(t.currentTarget).attr("data-Catid"))
+                // console.log($(t.currentTarget).attr("data-Catid"))
 
                 $(".ClassCategory").removeClass('active')
 
                 
-                console.log($(t.currentTarget).addClass("active"))
+                $(t.currentTarget).addClass("active")
             })
          
-        
+            $(".CategoryEdit").click((t) => {
+                console.log($(t.currentTarget).parent().attr("data-Catid"))
+
+                // console.log($(t.currentTarget).parent())
+
+            })
         
         
 

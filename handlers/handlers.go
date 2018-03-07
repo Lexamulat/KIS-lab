@@ -31,6 +31,9 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func Insert(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("qqqqqqqqqqqqqqqqqqqqqqqq")
+
 	affected := int64(0)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {

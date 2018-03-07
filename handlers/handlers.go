@@ -27,8 +27,11 @@ var DeletedCategory DBCategory
 func GetIndex(w http.ResponseWriter, r *http.Request) {
 	// tmpl, _ := template.ParseFiles("tmpl/index.html")
 	tmpl, _ := template.ParseGlob("tmpl/*.html")
+	err := tmpl.ExecuteTemplate(w, "index.html", nil)
+	if err != nil {
+		panic(err)
+	}
 
-	tmpl.Execute(w, nil)
 }
 
 func Insert(w http.ResponseWriter, r *http.Request) {

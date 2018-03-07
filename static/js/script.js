@@ -5,7 +5,6 @@ $(document).ready(function() {
 
 
 
-
 $("#CATADD").on('click', function() {
     // var namecat=$("#namecat").val();
     // var urlcat=$("#urlcat").val();

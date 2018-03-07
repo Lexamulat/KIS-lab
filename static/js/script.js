@@ -1,11 +1,18 @@
 "use strict";
 
 $(document).ready(function() {
+    
     console.log("start")
+    var options =  {
+        content: "Some text", // text of the snackbar
+        style: "toast", // add a custom class to your snackbar
+        timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
+    }
+    
+    // $.snackbar(options);
 
 
-
-$("#CATADD").on('click', function() {
+    $("#CATADD").on('click', function() {
     // var namecat=$("#namecat").val();
     // var urlcat=$("#urlcat").val();
 
@@ -26,24 +33,36 @@ $("#CATADD").on('click', function() {
 
         $.post("insert", JSON.stringify(out), function(data, textStatus) {
 
-           
             if((data)==0){
                 alert("failed");
+
+                // $("#snak").snackbar("show");
+
                 }else{
                 
-                 alert("succsess") 
-                
+                 //alert("succsess") 
+                //  $("#snak").snackbar("show");
+                 
                 }
 
            
         }, "json");
-    });
-
-
-
-
 });
 
+
+    $("#two").on('click', function() {
+
+        $.snackbar(options)
+
+    // //alert("failed");
+    // $("#snak").snackbar("toggle");
+    // $("#snak").snackbar("toggle");
+
+    // $("#snak").snackbar("toggle");
+
+    });
+   
+});
 
 
 

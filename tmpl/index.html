@@ -10,8 +10,10 @@
     <title>Lab</title>
 
     <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/snackbar.min.css">
     <script type="text/javascript" src="/static/js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="/static/js/snackbar.min.js"></script>
 
     <!-- Lab -->
     <link rel="stylesheet" href="/static/css/style.css">
@@ -23,6 +25,9 @@
 
 
 
+    <span id ="snak"data-toggle=snackbar data-content="This is my awesome snackbar!"></span>
+
+    <!-- <span class="btn btn-material-deeppurple" data-toggle="snackbar" data-content="This is a snackbar! Click to dismiss me." data-timeout="0" data-snackbar-id="snackbar1520432449672">Show or hide a snackbar</span> -->
 
     <!-- Create Category -->
     <div class="modal fade" id="l-createCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -48,7 +53,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Отмена</button>
-                    <button type="button" id="CATADD" class="btn btn-primary btn-success" data-dismiss="modal">Создать</button>
+                    <button   data-toggle=snackbar type="button" id="CATADD" class="btn btn-primary btn-success" data-dismiss="modal">Создать</button>
                 </div>
             </div>
         </div>
@@ -120,7 +125,8 @@
 
             <div class="col-4 l-list l-list_top">
                 <h2 class="l-list_lable">Подкатегории</h2>
-                <button type="button" class="btn btn-success addbtncat">+</button>
+                <button  type="button"  id="two"  class="btn btn-success addbtncat">+</button>
+                <!-- data-toggle=snackbar data-content="This is my awesome snackbar!" -->
                 <div class="row justify-content-around">
                     <div class="col-11">
                         <input class="form-control l-list_lable-search" type="search" placeholder="Поиск">
@@ -159,7 +165,7 @@
             <div class="col-11 l-list">
                 <div class="row">
                     <div class="col-4">
-                        <h2 class="l-list_lable"> <button type="button" class="btn btn-success addbtncat">+</button>Модели:</h2>
+                        <h2 class="l-list_lable"> <button  type="button" class="btn btn-success addbtncat">+</button>Модели:</h2>
                         <!-- <button type="button" class="btn btn-success addbtncat">+</button> -->
                     </div>
 
@@ -176,7 +182,7 @@
 
                         <div class="row l-model_item">
 
-                            <img src="https://source.unsplash.com/random/100x100" class="rounded float-left l-model_item-img">
+                            <!-- <img src="https://source.unsplash.com/random/100x100" class="rounded float-left l-model_item-img"> -->
                             <div class="l-model_item-about">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">List group item heading</h5>
@@ -201,7 +207,7 @@
 
                         <div class="row l-model_item">
 
-                            <img src="https://source.unsplash.com/random/100x100" class="rounded float-left l-model_item-img">
+                            <!-- <img src="https://source.unsplash.com/random/100x100" class="rounded float-left l-model_item-img"> -->
                             <div class="l-model_item-about">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">List group item heading</h5>

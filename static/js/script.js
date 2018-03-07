@@ -1,8 +1,10 @@
 "use strict";
 
 $(document).ready(function() {
-    
+   
     console.log("start")
+    updateList()
+    console.log("end")
     var options =  {
         content: "added23", // text of the snackbar
         style: "toast", // add a custom class to your snackbar
@@ -25,13 +27,6 @@ $(document).ready(function() {
         document.getElementById("url_cat").value = "";
 
 
-        // document.getElementById("CATADD").onclick = function(e){
-        //     document.getElementById("name_cat").value = "";
-        //     document.getElementById("url_cat").value = "";
-        //   }
-
-
-
         $.post("insert", JSON.stringify(out), function(data, textStatus) {
 
             if((data)==0){
@@ -50,48 +45,45 @@ $(document).ready(function() {
 
            
         }, "json");
-});
+    });
 
 
     $("#two").on('click', function() {
 
         $.snackbar(options)
 
-    // //alert("failed");
-    // $("#snak").snackbar("toggle");
-    // $("#snak").snackbar("toggle");
-
-    // $("#snak").snackbar("toggle");
-
     });
-   
+
+
+
+
+
+    function updateList() {
+        
+        $.post("list",function(data, textStatus) {
+            let list = $("#listCategory")
+              list.empty()
+              
+   var ActiveFlag=true;
+    $.each(data, function(key, val) {
+        console.log(val)
+        if(ActiveFlag==true){
+          var  flg="active";
+        }else{
+          var  flg=""
+        }
+        let el = `
+        <div class="list-group-item list-group-item-action ${flg}">${val.name}
+        </div>
+        `
+            list.append(el)
+            ActiveFlag=false
+            });
+
+        }, "json");
+    }
+
+
+    
 });
 
-
-
-
-
-
-
-
-
-
-// // INSERT
-// let InsertOK = $('#CaInsert .ok')
-
-// $(InsertOK).click(function() {
-//     let out = {
-//         name_cat: $("#modalInsert_name").val(),
-//         url_cat: $("#modalInsert_url").val()
-//     }
-
-//     $.post("insert", JSON.stringify(out), function(data, textStatus) {
-//         if (data == 0) {
-//             Materialize.toast(`Ошибка добавления`, 2000)
-//         } else {
-//             Materialize.toast(`Добавлено: ${data}`, 4000)
-//         }
-
-//         updateList()
-//     }, "json");
-// });

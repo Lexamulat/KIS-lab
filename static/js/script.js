@@ -4,13 +4,37 @@ $(document).ready(function() {
     console.log("start")
 
 
-    console.log("12")
-
-    $("#CATADD").on('click', function(p) {
 
 
-        console.log(p)
+$("#CATADD").on('click', function() {
+    // var namecat=$("#namecat").val();
+    // var urlcat=$("#urlcat").val();
+
+        let out = {
+            name_cat: $("#name_cat").val(),
+            url_cat: $("#url_cat").val()
+        }
+        document.getElementById("name_cat").value = "";
+        document.getElementById("url_cat").value = "";
+
+
+        // document.getElementById("CATADD").onclick = function(e){
+        //     document.getElementById("name_cat").value = "";
+        //     document.getElementById("url_cat").value = "";
+        //   }
+
+
+
+        $.post("insert", JSON.stringify(out), function(data, textStatus) {
+           
+
+           
+        }, "json");
     });
+
+
+
+
 });
 
 

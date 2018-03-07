@@ -44,10 +44,34 @@
 
 
                 <div id="listCategory" class="list-group">
-                    <div class="list-group-item list-group-item-action active">
                        
 
-                    </div>
+
+                        <!-- function updateList() {
+        
+                            $.post("list",function(data, textStatus) {
+                                let list = $("#listCategory")
+                                  list.empty()
+                                  
+                       var ActiveFlag=true;
+                        $.each(data, function(key, val) {
+                            console.log(val)
+                            if(ActiveFlag==true){
+                              var  flg="active";
+                            }else{
+                              var  flg=""
+                            }
+                            let el = `
+                            <div class="list-group-item list-group-item-action ${flg}">${val.name}
+                            </div>
+                            `
+                                list.append(el)
+                                ActiveFlag=false
+                                });
+                    
+                            }, "json");
+                        } -->
+
 
 
                 </div>

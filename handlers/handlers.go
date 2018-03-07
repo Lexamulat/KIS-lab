@@ -184,7 +184,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	fmt.Println(url)
-	res, err := DB.Exec("UPDATE Category SET name_cat = '?', url_cat='?'  WHERE id_cat = ?",
+	res, err := DB.Exec("UPDATE Category SET name_cat = ?, url_cat = ?  WHERE id_cat = ?",
 		name, url, strconv.Itoa(int(id)))
 
 	if err == nil {

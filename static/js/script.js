@@ -25,7 +25,15 @@ $("#CATADD").on('click', function() {
 
 
         $.post("insert", JSON.stringify(out), function(data, textStatus) {
+
            
+            if((data)==0){
+                alert("failed");
+                }else{
+                
+                 alert("succsess") 
+                
+                }
 
            
         }, "json");

@@ -23,19 +23,14 @@
 
 <body>
 
-    {{template "modals.html"}}
-    {{template "icons.html"}}
+    {{template "modals.html"}} {{template "icons.html"}}
 
     <div class="container-fluid l-container">
         <div class="row justify-content-around">
             <div class="col-4 l-list l-list_top">
-                <h2 class="l-list_lable">Категории
-                </h2>
+                <h2 class="l-list_lable">Категории</h2>
 
-
-
-                <button type="button" class="btn btn-success addbtncat" data-toggle="modal" data-target="#l-createCategory" data-whatever="@addCat">+</button>
-                
+                <button type="button" class="btn btn-success addbtncat" data-toggle="modal" data-target="#l-createCategory">+</button>
 
                 <div class="row justify-content-around">
                     <div class="col-11">
@@ -43,63 +38,8 @@
                     </div>
                 </div>
 
+                <div id="listCategory" class="list-group"></div>
 
-                <div id="listCategory" class="list-group">
-                       
-
-
-                        <!-- function updateList() {
-        
-                            $.post("list",function(data, textStatus) {
-                                let list = $("#listCategory")
-                                  list.empty()
-                                  
-                       var ActiveFlag=true;
-                        $.each(data, function(key, val) {
-                            console.log(val)
-                            if(ActiveFlag==true){
-                              var  flg="active";
-                            }else{
-                              var  flg=""
-                            }
-                            let el = `
-                            <div class="list-group-item list-group-item-action ${flg}">${val.name}
-                            </div>
-                            `
-                                list.append(el)
-                                ActiveFlag=false
-                                });
-                    
-                            }, "json");
-                        } -->
-
-
-
-                </div>
-                <!-- <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">
-                                                                                    Cras justo odio 
-                        <button type="button" class="btn btn-danger btn-sm l-button_action">
-                                <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
-                        </button>  
-                        <button type="button" class="btn btn-success btn-sm l-button_action">
-                            <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
-                        </button>   
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in
-                        <button type="button" class="btn btn-danger btn-sm l-button_action">
-                                <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
-                        </button>  
-                        <button type="button" class="btn btn-success btn-sm l-button_action">
-                            <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
-                        </button>                        
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item list-group-item-action">Vestibulum at eros</a>
-                </div> -->
             </div>
 
             <div class="row align-items-center">
@@ -110,8 +50,7 @@
 
             <div class="col-4 l-list l-list_top">
                 <h2 class="l-list_lable">Подкатегории</h2>
-                <button  type="button"  id="two"  class="btn btn-success addbtncat">+</button>
-                <!-- data-toggle=snackbar data-content="This is my awesome snackbar!" -->
+                <button type="button" id="two" class="btn btn-success addbtncat">+</button>
                 <div class="row justify-content-around">
                     <div class="col-11">
                         <input class="form-control l-list_lable-search" type="search" placeholder="Поиск">
@@ -134,7 +73,7 @@
                                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                             </button>  
                             <button type="button" class="btn btn-success btn-sm l-button_action">
-                                <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
+                                <svg><use xmlns:xlink="http://www.w3.ormodal_nameg/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                             </button>                        
                         </a>
                     <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
@@ -150,8 +89,7 @@
             <div class="col-11 l-list">
                 <div class="row">
                     <div class="col-4">
-                        <h2 class="l-list_lable"> <button  type="button" class="btn btn-success addbtncat">+</button>Модели:</h2>
-                        <!-- <button type="button" class="btn btn-success addbtncat">+</button> -->
+                        <h2 class="l-list_lable"> <button type="button" class="btn btn-success addbtncat">+</button>Модели:</h2>
                     </div>
 
                     <div class="col-8 input-group">

@@ -1,5 +1,9 @@
 "use strict";
 
+
+
+
+
 const LAB = {
     toast: function(text) {
         $.snackbar({
@@ -14,6 +18,7 @@ function labPost(url, postData) {
     return new Promise(resolve => {
         $.post(url, postData, function(data, textStatus) {
             resolve(data)
+            console.log(data)
         }, "json");
     });
 }
@@ -21,27 +26,43 @@ function labPost(url, postData) {
 async function update() {
     const dataCat = await labPost("list")
 
+    console.log("----cat")
+    console.log(dataCat)
+    console.log("----cat")
+
+
     catUpdate(dataCat)
+        // SubcatUpdate(dataCat)
 }
 
-async function CATADD() {
-    const dataCat = await labPost("list")
+async function Subupdate() {
+    const dataSubCat = await labPost("Sublist")
 
-    let out = {
-        name_cat: $("#name_cat").val(),
-        url_cat: $("#url_cat").val()
-    }
+    console.log("----SUBcat")
+    console.log(dataSubCat)
+    console.log("---SUB-cat")
 
-    document.getElementById("name_cat").value = "";
-    document.getElementById("url_cat").value = "";
-
-    let res = await labPost("insert", JSON.stringify(out))
-    if (res) {
-        LAB.toast("Успешно")
-    } else {
-        LAB.toast("Ошибка доабвления")
-    }
+    // catUpdate(dataCat)
+    SubcatUpdate(dataSubCat)
 }
+// async function CATADD() {
+//     const dataCat = await labPost("list")
+
+//     let out = {
+//         name_cat: $("#name_cat").val(),
+//         url_cat: $("#url_cat").val()
+//     }
+
+//     document.getElementById("name_cat").value = "";
+//     document.getElementById("url_cat").value = "";
+
+//     let res = await labPost("insert", JSON.stringify(out))
+//     if (res) {
+//         LAB.toast("Успешно")
+//     } else {
+//         LAB.toast("Ошибка доабвления")
+//     }
+// }
 
 async function CATADD() {
     const dataCat = await labPost("list")
@@ -81,6 +102,27 @@ async function CATEDIT() {
     update()
 }
 
+// filling in the SUBcategory table
+
+function SubcatUpdate(dataSubCat) {
+    let list = $("#listSubCategory")
+    list.empty()
+
+    for (let i = 0; i < dataSubCat.length; i++) {
+        const el = dataSubCat[i];
+
+        let listEl = `
+            <div class="list-group-item list-group-item-action l-cat-elem">
+                ${el.name_subc}
+              
+            </div>`
+
+        list.append(listEl)
+    }
+}
+
+
+// filling in the category table
 function catUpdate(dataCat) {
     let list = $("#listCategory")
     list.empty()
@@ -122,6 +164,7 @@ function catUpdate(dataCat) {
 
 async function labStart() {
     await update()
+    await Subupdate()
 
     // Category modals
     $("#CATADD").click(CATADD)
@@ -154,6 +197,9 @@ async function labStart() {
         $(".l-cat-elem").removeClass('active')
         $(t.currentTarget).addClass("active")
     })
+
+
+
 }
 
 $(document).ready(labStart)

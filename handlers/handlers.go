@@ -22,6 +22,13 @@ type DBCategory struct {
 	URL  string `json:"url"`
 }
 
+type DBSubCategory struct {
+	id_subc   int    `json:"id_subc"`
+	id_cat    string `json:"id_cat"`
+	name_subc string `json:"name_subc"`
+	url_subc  string `json:"url_subc"`
+}
+
 var DeletedCategory DBCategory
 
 func GetIndex(w http.ResponseWriter, r *http.Request) {
@@ -127,8 +134,11 @@ func DeleteItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetList(w http.ResponseWriter, r *http.Request) {
+
+	//все равно нич не приходит
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
 	sortType := string(bodyBytes)
+
 	//ASC / DESC
 	rows, err := DB.Query(`SELECT * FROM Category ORDER BY name_cat ` + sortType)
 
@@ -141,6 +151,28 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 		var temp DBCategory
 		rows.Scan(&temp.ID, &temp.Name, &temp.URL)
 		el = append(el, temp)
+	}
+
+	outJSON, _ := json.Marshal(el)
+	fmt.Fprintf(w, string(outJSON))
+}
+
+func SubGetList(w http.ResponseWriter, r *http.Request) {
+	// bodyBytes, _ := ioutil.ReadAll(r.Body)
+	// sortType := string(bodyBytes)
+	id := 135
+	rows, err := DB.Query(`SELECT * FROM Subcategory WHERE id_cat = ?`, id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	el := []DBSubCategory{}
+	for rows.Next() {
+		var temp DBSubCategory
+		rows.Scan(&temp.id_subc, &temp.id_cat, &temp.name_subc, &temp.url_subc)
+		el = append(el, temp)
+		fmt.Println(el)
 	}
 
 	outJSON, _ := json.Marshal(el)

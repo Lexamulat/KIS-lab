@@ -49,6 +49,8 @@ func main() {
 	router.HandleFunc("/table", h.DeleteOrCreate).Methods("POST")
 	router.HandleFunc("/edit", h.Edit).Methods("POST")
 	router.HandleFunc("/restore", h.Restore).Methods("POST")
+	///sub
+	router.HandleFunc("/Sublist", h.SubGetList).Methods("POST")
 
 	router.PathPrefix("/static/").Handler(s)
 

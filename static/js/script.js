@@ -1,5 +1,6 @@
 "use strict";
 
+<<<<<<< Updated upstream
 const LAB = {
     toast: function(text) {
         $.snackbar({
@@ -14,6 +15,51 @@ function labPost(url, postData) {
     return new Promise(resolve => {
         $.post(url, postData, function(data, textStatus) {
             resolve(data)
+=======
+$(document).ready(function() {
+    console.log("start")
+    updateList()
+    console.log("end")
+    var options = {
+        content: "added23", // text of the snackbar
+        style: "toast", // add a custom class to your snackbar
+        timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
+    }
+
+
+    // $.snackbar(options);
+
+
+    $("#CATADD").on('click', function() {
+        // var namecat=$("#namecat").val();
+        // var urlcat=$("#urlcat").val();
+
+        let out = {
+            name_cat: $("#name_cat").val(),
+            url_cat: $("#url_cat").val()
+        }
+        document.getElementById("name_cat").value = "";
+        document.getElementById("url_cat").value = "";
+
+
+        $.post("insert", JSON.stringify(out), function(data, textStatus) {
+
+            if ((data) == 0) {
+
+                alert("failed");
+
+                // $("#snak").snackbar("show");
+
+            } else {
+                console.log(options)
+                $.snackbar(options)
+                    //alert("succsess") 
+                    //  $("#snak").snackbar("show");
+
+            }
+
+
+>>>>>>> Stashed changes
         }, "json");
     });
 }
@@ -114,6 +160,7 @@ function catUpdate(dataCat) {
 }
 
 
+<<<<<<< Updated upstream
 async function labStart() {
     await update()
 
@@ -151,3 +198,41 @@ async function labStart() {
 }
 
 $(document).ready(labStart)
+=======
+    $("#CATEDIT").on('click', CATEDIT);
+
+
+});
+
+function CATEDIT() {
+    // var namecat=$("#namecat").val();
+    // var urlcat=$("#urlcat").val();
+
+    let out = {
+            name_cat: $("#CatEditName").val(),
+            url_cat: $("#CatEditUrl").val()
+        }
+        // document.getElementById("name_cat").value = "";
+        // document.getElementById("url_cat").value = "";
+
+
+    $.post("edit", JSON.stringify(out), function(data, textStatus) {
+
+        if ((data) == 0) {
+
+            alert("failed");
+
+            // $("#snak").snackbar("show");
+
+        } else {
+            console.log(options)
+            $.snackbar(options)
+                //alert("succsess") 
+                //  $("#snak").snackbar("show");
+
+        }
+        updateList()
+
+    }, "json");
+}
+>>>>>>> Stashed changes

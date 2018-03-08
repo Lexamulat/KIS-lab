@@ -1,6 +1,6 @@
 "use strict";
 
-$(document).ready(function () {
+$(document).ready(function() {
 
     console.log("start")
     updateList()
@@ -15,7 +15,7 @@ $(document).ready(function () {
     // $.snackbar(options);
 
 
-    $("#CATADD").on('click', function () {
+    $("#CATADD").on('click', function() {
         // var namecat=$("#namecat").val();
         // var urlcat=$("#urlcat").val();
 
@@ -27,7 +27,7 @@ $(document).ready(function () {
         document.getElementById("url_cat").value = "";
 
 
-        $.post("insert", JSON.stringify(out), function (data, textStatus) {
+        $.post("insert", JSON.stringify(out), function(data, textStatus) {
 
             if ((data) == 0) {
 
@@ -38,8 +38,8 @@ $(document).ready(function () {
             } else {
                 console.log(options)
                 $.snackbar(options)
-                //alert("succsess") 
-                //  $("#snak").snackbar("show");
+                    //alert("succsess") 
+                    //  $("#snak").snackbar("show");
 
             }
 
@@ -48,7 +48,7 @@ $(document).ready(function () {
     });
 
 
-    $("#two").on('click', function () {
+    $("#two").on('click', function() {
 
         $.snackbar(options)
 
@@ -61,12 +61,12 @@ $(document).ready(function () {
 
     function updateList() {
 
-        $.post("list", function (data, textStatus) {
+        $.post("list", function(data, textStatus) {
             let list = $("#listCategory")
             list.empty()
 
             var ActiveFlag = true;
-            $.each(data, function (key, val) {
+            $.each(data, function(key, val) {
                 console.log(val)
                 if (ActiveFlag == true) {
                     var flg = "active";
@@ -84,7 +84,7 @@ $(document).ready(function () {
                     </div>
                     `
 
-                    // <button type="button" class="btn btn-success addbtncat" data-toggle="modal" data-target="#l-createCategory" data-whatever="addCat">+</button>
+                // <button type="button" class="btn btn-success addbtncat" data-toggle="modal" data-target="#l-createCategory" data-whatever="addCat">+</button>
 
 
 
@@ -95,41 +95,77 @@ $(document).ready(function () {
             })
 
             $(".ClassCategory").click((t) => {
-        
+
                 // console.log($(t.currentTarget).attr("data-Catid"))
 
                 $(".ClassCategory").removeClass('active')
 
-                
+
                 $(t.currentTarget).addClass("active")
             })
-         
+
             $(".CategoryEdit").click((t) => {
                 console.log($(t.currentTarget).parent().attr("data-Catid"))
 
                 // console.log($(t.currentTarget).parent())
 
 
-                $('#l-EditCategory').on('show.bs.modal', function (event) {
+                $('#l-EditCategory').on('show.bs.modal', function(event) {
                     var button = $(event.relatedTarget) // Button that triggered the modal
-                    var recipient = button.data('whatevername') // Extract info from data-* attributes
-                    var recipient1 = button.data('whateverurl')
-                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                    var EditingName = button.data('whatevername') // Extract info from data-* attributes
+                    var EditingUrl = button.data('whateverurl')
+                        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                     var modal = $(this)
-                    
-                    modal.find('#CatEditName').val(recipient)
-                    modal.find('#CatEditUrl').val(recipient1)
-                  })
+
+                    modal.find('#CatEditName').val(EditingName)
+                    modal.find('#CatEditUrl').val(EditingUrl)
+                })
 
 
 
             })
-        
-        
+
+
 
         }, "json");
     }
 
-});
 
+
+
+
+    $("#CATEDIT").on('click', function() {
+        // var namecat=$("#namecat").val();
+        // var urlcat=$("#urlcat").val();
+
+        let out = {
+                name_cat: $("#CatEditName").val(),
+                url_cat: $("#CatEditUrl").val()
+            }
+            // document.getElementById("name_cat").value = "";
+            // document.getElementById("url_cat").value = "";
+
+
+        $.post("insert", JSON.stringify(out), function(data, textStatus) {
+
+            if ((data) == 0) {
+
+                alert("failed");
+
+                // $("#snak").snackbar("show");
+
+            } else {
+                console.log(options)
+                $.snackbar(options)
+                    //alert("succsess") 
+                    //  $("#snak").snackbar("show");
+
+            }
+            updateList()
+
+        }, "json");
+    });
+
+
+});

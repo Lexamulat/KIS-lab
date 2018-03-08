@@ -21,27 +21,7 @@ function labPost(url, postData) {
 async function update() {
     const dataCat = await labPost("list")
 
-    let list = $("#listCategory")
-    list.empty()
-
-    for (let i = 0; i < dataCat.length; i++) {
-        const el = dataCat[i];
-
-        let listEl = `
-            <div class="list-group-item list-group-item-action l-cat-elem" data-cat_id=${el.id}>
-                ${el.name}
-                <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete">
-                    <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
-                </button>  
-                <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_name=${el.name} data-modal_url=${el.url}>
-                    <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
-                </button>
-            </div>`
-
-        list.append(listEl)
-    }
-
-    list.children().first().addClass("active")
+    catUpdate(dataCat)
 }
 
 async function CATADD() {
@@ -85,7 +65,8 @@ async function CATADD() {
 async function CATEDIT() {
     let out = {
         name_cat: $("#CatEditName").val(),
-        url_cat: $("#CatEditUrl").val()
+        url_cat: $("#CatEditUrl").val(),
+        id_cat: $('#l-EditCategory').data("id")
     }
 
     let res = await labPost("insert", JSON.stringify(out))
@@ -98,25 +79,66 @@ async function CATEDIT() {
     update()
 }
 
+function catUpdate(dataCat) {
+    let list = $("#listCategory")
+    list.empty()
+
+    for (let i = 0; i < dataCat.length; i++) {
+        const el = dataCat[i];
+
+        let listEl = `
+            <div class="list-group-item list-group-item-action l-cat-elem" data-cat_id=${el.id}>
+                ${el.name}
+                <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete">
+                    <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
+                </button>  
+                <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
+                    <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
+                </button>
+            </div>`
+
+        list.append(listEl)
+    }
+
+    list.children().first().addClass("active")
+}
 
 
 async function labStart() {
     await update()
 
-    // EDIT modals
+    // Category modals
     $("#CATADD").click(CATADD)
     $("#CATEDIT").click(CATEDIT)
 
-    // EDIT placeholder
+    // Category placeholder
     $('#l-EditCategory').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget)
-        var EditingName = button.data('modal_name')
-        var EditingUrl = button.data('modal_url')
+        let button = $(event.relatedTarget)
+        let EditingName = button.data('modal_name')
+        let EditingUrl = button.data('modal_url')
+        let EditingId = button.data('modal_id')
 
         $(this).find('#CatEditName').val(EditingName)
         $(this).find('#CatEditUrl').val(EditingUrl)
+        $(this).data('id', EditingId)
     })
 
+    // Category search
+    $('#CatSearch').on('input', async function() {
+        let text = $('#CatSearch').val()
+
+        let res = await labPost("search", text)
+
+        catUpdate(res)
+        LAB.toast(`Найдено: ${res.length}`)
+    });
+
+    // Category remove
+    $('.CategoryDelete').click(async(e) => {
+        let id = $(e.currentTarget).parent().data('cat_id')
+        await labPost("del", id.toString())
+        update()
+    })
 
     // Move active
     $(".l-cat-elem").click((t) => {

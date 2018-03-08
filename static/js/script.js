@@ -71,7 +71,7 @@ async function CATEDIT() {
         id_cat: $('#l-EditCategory').data("id")
     }
 
-    let res = await labPost("insert", JSON.stringify(out))
+    let res = await labPost("edit", JSON.stringify(out))
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -110,6 +110,12 @@ function catUpdate(dataCat) {
         let id = $(e.currentTarget).parent().data('cat_id')
         await labPost("del", id.toString())
         update()
+    })
+
+
+    $(".l-cat-elem").click((t) => {
+        $(".l-cat-elem").removeClass('active')
+        $(t.currentTarget).addClass("active")
     })
 }
 

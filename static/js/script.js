@@ -60,6 +60,8 @@ async function CATADD() {
     } else {
         LAB.toast("Ошибка доабвления")
     }
+
+    update()
 }
 
 async function CATEDIT() {
@@ -101,6 +103,14 @@ function catUpdate(dataCat) {
     }
 
     list.children().first().addClass("active")
+
+
+    // Category remove
+    $('.CategoryDelete').click(async(e) => {
+        let id = $(e.currentTarget).parent().data('cat_id')
+        await labPost("del", id.toString())
+        update()
+    })
 }
 
 
@@ -132,13 +142,6 @@ async function labStart() {
         catUpdate(res)
         LAB.toast(`Найдено: ${res.length}`)
     });
-
-    // Category remove
-    $('.CategoryDelete').click(async(e) => {
-        let id = $(e.currentTarget).parent().data('cat_id')
-        await labPost("del", id.toString())
-        update()
-    })
 
     // Move active
     $(".l-cat-elem").click((t) => {

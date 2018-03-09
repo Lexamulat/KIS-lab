@@ -21,7 +21,7 @@ type DBSubCategory struct { //variables must begin with a capital
 func SubGetList(w http.ResponseWriter, r *http.Request) {
 
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	id, err := jsonparser.GetInt(bodyBytes)
+	id, _ := jsonparser.GetInt(bodyBytes)
 	rows, err := DB.Query(`SELECT * FROM Subcategory WHERE id_cat = ?`, id)
 
 	if err != nil {

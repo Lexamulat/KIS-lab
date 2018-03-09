@@ -1,9 +1,6 @@
 "use strict";
 
 
-
-
-
 const LAB = {
     toast: function(text) {
         $.snackbar({
@@ -15,25 +12,7 @@ const LAB = {
 }
 
 
-
-
-
-// function labPost(url, postData) {
-// var d
-//     $.post(url, postData, function(data, textStatus) {
-
-//     }, "json");
-//     let retdata = data
-//     return retdata
-
-// }
-
-
-
-
-
 function labPost(url, postData) {
-
     return new Promise(resolve => {
         // console.log(postData)
         $.post(url, postData, function(data, textStatus) {
@@ -228,7 +207,6 @@ async function labStart() {
     //$("#three").click(TH)
 
 
-
     // Category placeholder
     $('#l-EditCategory').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget)
@@ -292,7 +270,6 @@ async function labStart() {
         $(this).find('#SubCatEditUrl').val(EditingUrl)
         $(this).data('id', EditingId)
     })
-
 
 
 }

@@ -17,7 +17,7 @@ const LAB = {
 function labPost(url, postData) {
 
     return new Promise(resolve => {
-        console.log(postData)
+        // console.log(postData)
         $.post(url, postData, function(data, textStatus) {
             resolve(data)
         }, "json");
@@ -33,6 +33,35 @@ async function Subupdate(cat_id) {
     const dataSubCat = await labPost("Sublist", cat_id)
 
     SubcatUpdate(dataSubCat)
+}
+
+
+async function SUBCATADD() {
+    // const dataCat = await labPost("list")
+
+    var ig = $($('.list-group-item.list-group-item-action.l-cat-elem.active').data('cat_id')); //find current active from cat for insert in subcat
+
+
+
+    let out = {
+        name_cat: $("#name_subc").val(),
+        url_cat: $("#url_subc").val(),
+        id_subc: ig
+    }
+
+
+
+    // document.getElementById("name_subc").value = "";
+    // document.getElementById("url_subc").value = "";
+
+    let res = await labPost("insert", JSON.stringify(out))
+    if (res) {
+        LAB.toast("Успешно")
+    } else {
+        LAB.toast("Ошибка доабвления")
+    }
+
+    update()
 }
 
 
@@ -61,7 +90,7 @@ async function CATEDIT() {
     let out = {
         name_cat: $("#CatEditName").val(),
         url_cat: $("#CatEditUrl").val(),
-        id_cat: $('#l-EditCategory').data("id")
+        id_cat: $('#l-EditSubCategory').data("id")
     }
 
     let res = await labPost("edit", JSON.stringify(out))
@@ -126,6 +155,10 @@ async function catUpdate(dataCat) {
     list.children().first().addClass("active")
 
 
+    //console.log(list.children().first().data('cat_id'))
+    Subupdate(JSON.stringify(list.children().first().data('cat_id'))) // (take id from first in category and select with this id to SubCat) 
+
+
     // Category remove
     $('.CategoryDelete').click(async(e) => {
         let id = $(e.currentTarget).parent().data('cat_id')
@@ -136,14 +169,10 @@ async function catUpdate(dataCat) {
 
     $(".l-cat-elem").click((t) => {
         $(".l-cat-elem").removeClass('active')
-
-
-
-        // console.log($(t.currentTarget).data('cat_id')) //take id from category by click for select subcat
+            // console.log($(t.currentTarget).data('cat_id'))                          //(take id from category by click for select subcat)
         $(t.currentTarget).addClass("active")
 
-        Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //put id from chosen point from category to json for serv
-            // await Subupdate(t.currentTarget)
+        Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
 
     })
 }
@@ -151,7 +180,7 @@ async function catUpdate(dataCat) {
 
 async function labStart() {
     await update()
-        // await Subupdate()
+
 
     // Category modals
     $("#CATADD").click(CATADD)
@@ -185,9 +214,9 @@ async function labStart() {
         $(t.currentTarget).addClass("active")
     })
 
-
-
-    // SubCategory placeholder
+    // SubCategory modals
+    $("#SUBCATADD").click(SUBCATADD)
+        // SubCategory placeholder
     $('#l-EditSubCategory').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget)
         let EditingName = button.data('modal_name_subc')
@@ -198,6 +227,8 @@ async function labStart() {
         $(this).find('#SubCatEditUrl').val(EditingUrl)
         $(this).data('id', EditingId)
     })
+
+
 
 
 

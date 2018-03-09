@@ -62,6 +62,40 @@
 </div>
 
 
+
+
+<!-- Model window for Add new SubCategory -->
+
+<div class="modal fade" id="l-createSubCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавление подкатегории</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div id="CaInsert" class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="modalInsert_name" class="col-form-label">Название подкатегории</label>
+                        <input id="name_subc" type="text" class="form-control" id="modalInsert_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalInsert_url" class="col-form-label ">URL</label>
+                        <input id="url_subc" type="text" class="form-control" id="modalInsert_url">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Отмена</button>
+                <button type="button" id="SUBCATADD" class="btn btn-primary btn-success" data-dismiss="modal">Создать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Model window for Edit  SubCategory -->
 <div class="modal fade" id="l-EditSubCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

@@ -1,13 +1,9 @@
 "use strict";
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 
 
 
 
->>>>>>> master
 const LAB = {
     toast: function(text) {
         $.snackbar({
@@ -19,102 +15,26 @@ const LAB = {
 }
 
 function labPost(url, postData) {
+
     return new Promise(resolve => {
+        console.log(postData)
         $.post(url, postData, function(data, textStatus) {
             resolve(data)
-<<<<<<< HEAD
-=======
-$(document).ready(function() {
-    console.log("start")
-    updateList()
-    console.log("end")
-    var options = {
-        content: "added23", // text of the snackbar
-        style: "toast", // add a custom class to your snackbar
-        timeout: 2000 // time in milliseconds after the snackbar autohides, 0 is disabled
-    }
-
-
-    // $.snackbar(options);
-
-
-    $("#CATADD").on('click', function() {
-        // var namecat=$("#namecat").val();
-        // var urlcat=$("#urlcat").val();
-
-        let out = {
-            name_cat: $("#name_cat").val(),
-            url_cat: $("#url_cat").val()
-        }
-        document.getElementById("name_cat").value = "";
-        document.getElementById("url_cat").value = "";
-
-
-        $.post("insert", JSON.stringify(out), function(data, textStatus) {
-
-            if ((data) == 0) {
-
-                alert("failed");
-
-                // $("#snak").snackbar("show");
-
-            } else {
-                console.log(options)
-                $.snackbar(options)
-                    //alert("succsess") 
-                    //  $("#snak").snackbar("show");
-
-            }
-
-
->>>>>>> Stashed changes
-=======
-            console.log(data)
->>>>>>> master
         }, "json");
     });
 }
 
 async function update() {
     const dataCat = await labPost("list")
-
-    console.log("----cat")
-    console.log(dataCat)
-    console.log("----cat")
-
-
     catUpdate(dataCat)
-        // SubcatUpdate(dataCat)
 }
 
-async function Subupdate() {
-    const dataSubCat = await labPost("Sublist")
+async function Subupdate(cat_id) {
+    const dataSubCat = await labPost("Sublist", cat_id)
 
-    console.log("----SUBcat")
-    console.log(dataSubCat)
-    console.log("---SUB-cat")
-
-    // catUpdate(dataCat)
     SubcatUpdate(dataSubCat)
 }
-// async function CATADD() {
-//     const dataCat = await labPost("list")
 
-//     let out = {
-//         name_cat: $("#name_cat").val(),
-//         url_cat: $("#url_cat").val()
-//     }
-
-//     document.getElementById("name_cat").value = "";
-//     document.getElementById("url_cat").value = "";
-
-//     let res = await labPost("insert", JSON.stringify(out))
-//     if (res) {
-//         LAB.toast("Успешно")
-//     } else {
-//         LAB.toast("Ошибка доабвления")
-//     }
-// }
 
 async function CATADD() {
     const dataCat = await labPost("list")
@@ -164,18 +84,25 @@ function SubcatUpdate(dataSubCat) {
         const el = dataSubCat[i];
 
         let listEl = `
-            <div class="list-group-item list-group-item-action l-cat-elem">
+            <div class="list-group-item list-group-item-action l-Subcat-elem data-cat_id=${el.id_subc}">
                 ${el.name_subc}
-              
+                <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete">
+                <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
+            </button>  
+            <button type="button" class="btn btn-success btn-sm l-button_action SubCategoryEdit" data-toggle="modal" data-target="#l-EditSubCategory" data-modal_id_subc=${el.id_subc} data-modal_id_cat=${el.id_cat} data-modal_name_subc=${el.name_subc} data-modal_url_subc=${el.url_subc}>
+                <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
+            </button>
             </div>`
 
         list.append(listEl)
     }
+    list.children().first().addClass("active")
 }
 
 
+
 // filling in the category table
-function catUpdate(dataCat) {
+async function catUpdate(dataCat) {
     let list = $("#listCategory")
     list.empty()
 
@@ -185,10 +112,10 @@ function catUpdate(dataCat) {
         let listEl = `
             <div class="list-group-item list-group-item-action l-cat-elem" data-cat_id=${el.id}>
                 ${el.name}
-                <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete">
+                <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete">
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                 </button>  
-                <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
+                <button type="button" class="btn btn-success btn-sm l-button_action SubCategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                 </button>
             </div>`
@@ -209,15 +136,22 @@ function catUpdate(dataCat) {
 
     $(".l-cat-elem").click((t) => {
         $(".l-cat-elem").removeClass('active')
+
+
+
+        // console.log($(t.currentTarget).data('cat_id')) //take id from category by click for select subcat
         $(t.currentTarget).addClass("active")
+
+        Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //put id from chosen point from category to json for serv
+            // await Subupdate(t.currentTarget)
+
     })
 }
 
 
-<<<<<<< Updated upstream
 async function labStart() {
     await update()
-    await Subupdate()
+        // await Subupdate()
 
     // Category modals
     $("#CATADD").click(CATADD)
@@ -253,44 +187,20 @@ async function labStart() {
 
 
 
+    // SubCategory placeholder
+    $('#l-EditSubCategory').on('show.bs.modal', function(event) {
+        let button = $(event.relatedTarget)
+        let EditingName = button.data('modal_name_subc')
+        let EditingUrl = button.data('modal_url_subc')
+        let EditingId = button.data('modal_id_cat')
+
+        $(this).find('#SubCatEditName').val(EditingName)
+        $(this).find('#SubCatEditUrl').val(EditingUrl)
+        $(this).data('id', EditingId)
+    })
+
+
+
 }
 
 $(document).ready(labStart)
-=======
-    $("#CATEDIT").on('click', CATEDIT);
-
-
-});
-
-function CATEDIT() {
-    // var namecat=$("#namecat").val();
-    // var urlcat=$("#urlcat").val();
-
-    let out = {
-            name_cat: $("#CatEditName").val(),
-            url_cat: $("#CatEditUrl").val()
-        }
-        // document.getElementById("name_cat").value = "";
-        // document.getElementById("url_cat").value = "";
-
-
-    $.post("edit", JSON.stringify(out), function(data, textStatus) {
-
-        if ((data) == 0) {
-
-            alert("failed");
-
-            // $("#snak").snackbar("show");
-
-        } else {
-            console.log(options)
-            $.snackbar(options)
-                //alert("succsess") 
-                //  $("#snak").snackbar("show");
-
-        }
-        updateList()
-
-    }, "json");
-}
->>>>>>> Stashed changes

@@ -22,11 +22,12 @@ type DBCategory struct {
 	URL  string `json:"url"`
 }
 
-type DBSubCategory struct {
-	id_subc   int    `json:"id_subc"`
-	id_cat    string `json:"id_cat"`
-	name_subc string `json:"name_subc"`
-	url_subc  string `json:"url_subc"`
+type DBSubCategory struct { //variables must begin with a capital
+	//letter, otherwise they can not be exported to main.go client(undifined)
+	Idsubc   int    `json:"id_subc"`
+	Idcat    string `json:"id_cat"`
+	Namesubc string `json:"name_subc"`
+	Urlsubc  string `json:"url_subc"`
 }
 
 var DeletedCategory DBCategory
@@ -136,11 +137,11 @@ func DeleteItem(w http.ResponseWriter, r *http.Request) {
 func GetList(w http.ResponseWriter, r *http.Request) {
 
 	//все равно нич не приходит
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	sortType := string(bodyBytes)
+	// bodyBytes, _ := ioutil.ReadAll(r.Body)
+	// sortType := string(bodyBytes)
 
 	//ASC / DESC
-	rows, err := DB.Query(`SELECT * FROM Category ORDER BY name_cat ` + sortType)
+	rows, err := DB.Query(`SELECT * FROM Category ORDER BY name_cat `)
 
 	if err != nil {
 		log.Fatal(err)
@@ -158,24 +159,25 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 }
 
 func SubGetList(w http.ResponseWriter, r *http.Request) {
-	// bodyBytes, _ := ioutil.ReadAll(r.Body)
-	// sortType := string(bodyBytes)
-	id := 135
+
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	id, err := jsonparser.GetInt(bodyBytes)
 	rows, err := DB.Query(`SELECT * FROM Subcategory WHERE id_cat = ?`, id)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	el := []DBSubCategory{}
+	el2 := []DBSubCategory{}
 	for rows.Next() {
 		var temp DBSubCategory
-		rows.Scan(&temp.id_subc, &temp.id_cat, &temp.name_subc, &temp.url_subc)
-		el = append(el, temp)
-		fmt.Println(el)
-	}
+		rows.Scan(&temp.Idsubc, &temp.Idcat, &temp.Namesubc, &temp.Urlsubc)
+		el2 = append(el2, temp)
 
-	outJSON, _ := json.Marshal(el)
+	}
+	fmt.Println(el2)
+
+	outJSON, _ := json.Marshal(el2)
 	fmt.Fprintf(w, string(outJSON))
 }
 

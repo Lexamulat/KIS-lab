@@ -14,6 +14,18 @@ const LAB = {
     },
 }
 
+
+
+
+
+// $.labpost(url, postData, function(data, textStatus) {
+//     return data
+// }, "json");
+
+
+
+
+
 function labPost(url, postData) {
 
     return new Promise(resolve => {
@@ -25,14 +37,18 @@ function labPost(url, postData) {
 }
 
 async function update() {
+    console.log("3")
     const dataCat = await labPost("list")
-    catUpdate(dataCat)
+    await catUpdate(dataCat)
+    console.log("03")
 }
 
 async function Subupdate(cat_id) {
+    console.log("6")
     const dataSubCat = await labPost("Sublist", cat_id)
 
-    SubcatUpdate(dataSubCat)
+    await SubcatUpdate(dataSubCat)
+    console.log("01")
 }
 
 
@@ -108,7 +124,7 @@ async function CATEDIT() {
 function SubcatUpdate(dataSubCat) {
     let list = $("#listSubCategory")
     list.empty()
-
+    console.log("7")
     for (let i = 0; i < dataSubCat.length; i++) {
         const el = dataSubCat[i];
 
@@ -128,10 +144,17 @@ function SubcatUpdate(dataSubCat) {
     list.children().first().addClass("active")
 }
 
+// async function CatDelete() {
 
+//     let id = $(e.currentTarget).parent().data('cat_id')
+//     await labPost("del", id.toString())
+//     await update()
+
+// }
 
 // filling in the category table
 async function catUpdate(dataCat) {
+    console.log("4")
     let list = $("#listCategory")
     list.empty()
 
@@ -151,26 +174,34 @@ async function catUpdate(dataCat) {
 
         list.append(listEl)
     }
-
+    console.log("5")
     list.children().first().addClass("active")
 
 
     //console.log(list.children().first().data('cat_id'))
-    Subupdate(JSON.stringify(list.children().first().data('cat_id'))) // (take id from first in category and select with this id to SubCat) 
+    await Subupdate(JSON.stringify(list.children().first().data('cat_id'))) // (take id from first in category and select with this id to SubCat) 
 
 
     // Category remove
+
+
     $('.CategoryDelete').click(async(e) => {
         let id = $(e.currentTarget).parent().data('cat_id')
-            // await labPost("del", id.toString())
+        console.log("--------------------------")
+        console.log("1")
+        await labPost("del", id.toString())
+        console.log("2")
         await update()
+        console.log("8")
 
+        //await Subupdate(JSON.stringify($(e.currentTarget).data('cat_id')))
 
     })
 
     //change active status from Category on clic
     $(".l-cat-elem").click((t) => {
         $(".l-cat-elem").removeClass('active')
+        console.log("04")
             // console.log($(t.currentTarget).data('cat_id'))                          //(take id from category by click for select subcat)
         $(t.currentTarget).addClass("active")
 
@@ -239,10 +270,11 @@ async function labStart() {
     });
 
     // Move active
-    $(".l-cat-elem").click((t) => {
-        $(".l-cat-elem").removeClass('active')
-        $(t.currentTarget).addClass("active")
-    })
+    // $(".l-cat-elem").click((t) => {
+    //     $(".l-cat-elem").removeClass('active')
+    //     console.log("02")
+    //     $(t.currentTarget).addClass("active")
+    // })
 
     // SubCategory modals
     $("#SUBCATADD").click(SUBCATADD)

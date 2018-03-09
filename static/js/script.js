@@ -181,7 +181,6 @@ async function catUpdate(dataCat) {
 async function labStart() {
     await update()
 
-
     // Category modals
     $("#CATADD").click(CATADD)
     $("#CATEDIT").click(CATEDIT)
@@ -229,6 +228,17 @@ async function labStart() {
     })
 
 
+    // SubCategory placeholder
+    $('#l-EditSubCategory').on('show.bs.modal', function(event) {
+        let button = $(event.relatedTarget)
+        let EditingName = button.data('modal_name_subc')
+        let EditingUrl = button.data('modal_url_subc')
+        let EditingId = button.data('modal_id_cat')
+
+        $(this).find('#SubCatEditName').val(EditingName)
+        $(this).find('#SubCatEditUrl').val(EditingUrl)
+        $(this).data('id', EditingId)
+    })
 
 
 

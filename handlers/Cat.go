@@ -1,4 +1,4 @@
-package Cat
+package handlers
 
 import (
 	"database/sql"

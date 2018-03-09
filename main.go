@@ -7,7 +7,7 @@ import (
 	"net/http" // Для запуска HTTP сервера
 	"strings"
 
-	h "github.com/gitGUAP/KIS-lab4/handlers"
+	h "github.com/gitGUAP/KIS-lab4/handlers/Cat"
 	"github.com/gorilla/mux"
 	sqlite "github.com/mattn/go-sqlite3" // Драйвер для работы со SQLite3
 )

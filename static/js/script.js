@@ -90,7 +90,7 @@ async function CATEDIT() {
     let out = {
         name_cat: $("#CatEditName").val(),
         url_cat: $("#CatEditUrl").val(),
-        id_cat: $('#l-EditSubCategory').data("id")
+        id_cat: $('#l-EditCategory').data("id")
     }
 
     let res = await labPost("edit", JSON.stringify(out))

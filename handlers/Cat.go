@@ -210,7 +210,6 @@ func DeleteOrCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func Edit(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("1111111111111111111111")
 
 	body, _ := ioutil.ReadAll(r.Body)
 	affected := int64(0)
@@ -218,6 +217,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	id, err := jsonparser.GetInt(body, "id_cat")
 
 	if err != nil {
+		fmt.Println("err")
 		log.Fatal(err)
 	}
 	fmt.Println(id)

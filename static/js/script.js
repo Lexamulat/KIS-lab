@@ -141,7 +141,7 @@ async function catUpdate(dataCat) {
         let listEl = `
             <div class="list-group-item list-group-item-action l-cat-elem" data-cat_id=${el.id}>
                 ${el.name}
-                <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete">
+                <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete" data-toggle="modal" data-target="#l-DeleteCategory" data-id=${el.id}>
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                 </button>  
                 <button type="button" class="btn btn-success btn-sm l-button_action SubCategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
@@ -162,11 +162,13 @@ async function catUpdate(dataCat) {
     // Category remove
     $('.CategoryDelete').click(async(e) => {
         let id = $(e.currentTarget).parent().data('cat_id')
-        await labPost("del", id.toString())
-        update()
+            // await labPost("del", id.toString())
+        await update()
+
+
     })
 
-
+    //change active status from Category on clic
     $(".l-cat-elem").click((t) => {
         $(".l-cat-elem").removeClass('active')
             // console.log($(t.currentTarget).data('cat_id'))                          //(take id from category by click for select subcat)
@@ -177,6 +179,30 @@ async function catUpdate(dataCat) {
     })
 }
 
+async function CATEDIT() {
+    let out = {
+        name_cat: $("#CatEditName").val(),
+        url_cat: $("#CatEditUrl").val(),
+        id_cat: $('#l-EditCategory').data("id")
+    }
+
+    let res = await labPost("edit", JSON.stringify(out))
+    if (res) {
+        LAB.toast("Успешно")
+    } else {
+        LAB.toast("Ошибка редактирвоания")
+    }
+
+    update()
+}
+
+
+// async function TH() {
+//     console.log("test")
+//     await labPost("test")
+//     console.log("after")
+// }
+
 
 async function labStart() {
     await update()
@@ -184,6 +210,11 @@ async function labStart() {
     // Category modals
     $("#CATADD").click(CATADD)
     $("#CATEDIT").click(CATEDIT)
+
+
+    //$("#three").click(TH)
+
+
 
     // Category placeholder
     $('#l-EditCategory').on('show.bs.modal', function(event) {

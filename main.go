@@ -51,6 +51,7 @@ func main() {
 	router.HandleFunc("/restore", h.Restore).Methods("POST")
 	///sub
 	router.HandleFunc("/Sublist", h.SubGetList).Methods("POST")
+	router.HandleFunc("/test", h.Test).Methods("POST")
 
 	router.PathPrefix("/static/").Handler(s)
 

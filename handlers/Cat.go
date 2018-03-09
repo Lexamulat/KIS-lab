@@ -22,14 +22,6 @@ type DBCategory struct {
 	URL  string `json:"url"`
 }
 
-type DBSubCategory struct { //variables must begin with a capital
-	//letter, otherwise they can not be exported to main.go client(undifined)
-	Idsubc   int    `json:"id_subc"`
-	Idcat    string `json:"id_cat"`
-	Namesubc string `json:"name_subc"`
-	Urlsubc  string `json:"url_subc"`
-}
-
 var DeletedCategory DBCategory
 
 func GetIndex(w http.ResponseWriter, r *http.Request) {
@@ -155,29 +147,6 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	outJSON, _ := json.Marshal(el)
-	fmt.Fprintf(w, string(outJSON))
-}
-
-func SubGetList(w http.ResponseWriter, r *http.Request) {
-
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	id, err := jsonparser.GetInt(bodyBytes)
-	rows, err := DB.Query(`SELECT * FROM Subcategory WHERE id_cat = ?`, id)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	el2 := []DBSubCategory{}
-	for rows.Next() {
-		var temp DBSubCategory
-		rows.Scan(&temp.Idsubc, &temp.Idcat, &temp.Namesubc, &temp.Urlsubc)
-		el2 = append(el2, temp)
-
-	}
-	fmt.Println(el2)
-
-	outJSON, _ := json.Marshal(el2)
 	fmt.Fprintf(w, string(outJSON))
 }
 

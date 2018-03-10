@@ -134,3 +134,17 @@ func SubSearch(w http.ResponseWriter, r *http.Request) {
 	outJSON, _ := json.Marshal(el2)
 	fmt.Fprintf(w, string(outJSON))
 }
+
+func SubDeleteItem(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	id := string(bodyBytes)
+
+	res, err := DB.Exec("DELETE FROM Subcategory WHERE id_subc = ?", id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	affected, _ := res.RowsAffected()
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}

@@ -30,7 +30,10 @@ async function update() {
     // Category remove
     $('.CategoryDelete').click(async(e) => {
         e.stopPropagation();
+
+        console.log(e.currentTarget)
         let id = $(e.currentTarget).parent().data('cat_id')
+
         await labPost("del", id.toString())
         await update()
     })
@@ -46,7 +49,21 @@ async function update() {
 
 async function Subupdate(cat_id) {
     const dataSubCat = await labPost("Sublist", cat_id)
-    SubcatUpdate(dataSubCat)
+    await SubcatUpdate(dataSubCat)
+
+    $('.SubCategoryDelete').click(async(c) => {
+        // c.stopPropagation();
+        let id = $(c.currentTarget).data('id_subc')
+            // await labPost("Subdel", JSON.stringify(id))
+        let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+        await Subupdate(CurrentActiveCat)
+    })
+    $(".l-Subcat-elem").click(async(t) => {
+        $(".l-Subcat-elem").removeClass('active')
+        $(t.currentTarget).addClass("active")
+
+        // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
+    })
 }
 
 
@@ -114,6 +131,7 @@ async function CATADD() {
 // filling in the SUBcategory table
 
 function SubcatUpdate(dataSubCat) {
+    console.log("SUBCATUPD")
     let list = $("#listSubCategory")
     list.empty()
     for (let i = 0; i < dataSubCat.length; i++) {
@@ -122,7 +140,7 @@ function SubcatUpdate(dataSubCat) {
         let listEl = `
             <div class="list-group-item list-group-item-action l-Subcat-elem data-id_subc=${el.id_subc}">
                 ${el.name_subc}
-                <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete">
+                <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete" data-id_subc=${el.id_subc}>
                 <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
             </button>  
             <button type="button" class="btn btn-success btn-sm l-button_action SubCategoryEdit" data-toggle="modal" data-target="#l-EditSubCategory" data-modal_id_subc=${el.id_subc} data-modal_id_cat=${el.id_cat} data-modal_name_subc=${el.name_subc} data-modal_url_subc=${el.url_subc}>
@@ -132,13 +150,27 @@ function SubcatUpdate(dataSubCat) {
 
         list.append(listEl)
     }
-    list.children().first().addClass("active")
-    $(".l-Subcat-elem").click(async(t) => {
-        $(".l-Subcat-elem").removeClass('active')
-        $(t.currentTarget).addClass("active")
 
-        // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
-    })
+
+
+    // $('.SubCategoryDelete').click(async(c) => {
+    //      c.stopPropagation();
+    //     let id = $(c.currentTarget).parent().data('id_subc')
+    //     console.log(id)
+    //         // await labPost("Subdel", JSON.stringify(id))
+    //         // let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+
+    //     // await Subupdate(JSON.stringify(CurrentActiveCat))
+    //     //await update()
+    // })
+
+    list.children().first().addClass("active")
+        // $(".l-Subcat-elem").click(async(t) => {
+        //     $(".l-Subcat-elem").removeClass('active')
+        //     $(t.currentTarget).addClass("active")
+
+    //     // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
+    // })
 }
 
 
@@ -185,6 +217,22 @@ async function CATEDIT() {
 
     update()
 }
+
+
+// async function SubCategoryDelete() {
+//     console.log("subDel")
+
+
+//     // let id = $(currentTarget).parent().data('id_subc')
+//     // console.log(id)
+//     // await labPost("Subdel", JSON.stringify(id))
+//     // let CurrentActiveCat = $('.l-Subcat-elem.active').data('cat_id');
+//     // console.log(CurrentActiveCat)
+//         // await Subupdate(JSON.stringify(CurrentActiveCat))
+//         //await update()
+
+
+// }
 
 
 async function SUBCATEDIT() {
@@ -251,6 +299,7 @@ async function labStart() {
     // SubCategory modals
     $("#SUBCATADD").click(SUBCATADD)
     $("#SUBCATEDIT").click(SUBCATEDIT)
+        // /$(".SubCategoryDelete").click(SubCategoryDelete)
 
     // SubCategory placeholder
     $('#l-EditSubCategory').on('show.bs.modal', function(event) {

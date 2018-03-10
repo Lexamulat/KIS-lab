@@ -96,22 +96,22 @@ async function CATADD() {
     update()
 }
 
-async function CATEDIT() {
-    let out = {
-        name_cat: $("#CatEditName").val(),
-        url_cat: $("#CatEditUrl").val(),
-        id_cat: $('#l-EditCategory').data("id")
-    }
+// async function CATEDIT() {
+//     let out = {
+//         name_cat: $("#CatEditName").val(),
+//         url_cat: $("#CatEditUrl").val(),
+//         id_cat: $('#l-EditCategory').data("id")
+//     }
 
-    let res = await labPost("edit", JSON.stringify(out))
-    if (res) {
-        LAB.toast("Успешно")
-    } else {
-        LAB.toast("Ошибка редактирвоания")
-    }
+//     let res = await labPost("edit", JSON.stringify(out))
+//     if (res) {
+//         LAB.toast("Успешно")
+//     } else {
+//         LAB.toast("Ошибка редактирвоания")
+//     }
 
-    update()
-}
+//     update()
+// }
 
 // filling in the SUBcategory table
 
@@ -122,7 +122,7 @@ function SubcatUpdate(dataSubCat) {
         const el = dataSubCat[i];
 
         let listEl = `
-            <div class="list-group-item list-group-item-action l-Subcat-elem data-cat_id=${el.id_subc}">
+            <div class="list-group-item list-group-item-action l-Subcat-elem data-id_subc=${el.id_subc}">
                 ${el.name_subc}
                 <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete">
                 <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
@@ -154,7 +154,7 @@ async function catUpdate(dataCat) {
                 <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete" data-toggle="modal" data-target="#l-DeleteCategory" data-id=${el.id}>
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                 </button>  
-                <button type="button" class="btn btn-success btn-sm l-button_action SubCategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
+                <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                 </button>
             </div>`
@@ -169,7 +169,7 @@ async function CATEDIT() {
     let out = {
         name_cat: $("#CatEditName").val(),
         url_cat: $("#CatEditUrl").val(),
-        id_cat: $('#l-EditCategory').data("id")
+        id_cat: $('#l-EditCategory').data("cat_id") //  "id" define in SubCategory placeholder
     }
 
     let res = await labPost("edit", JSON.stringify(out))
@@ -185,12 +185,12 @@ async function CATEDIT() {
 
 async function SUBCATEDIT() {
     let out = {
-        name_cat: $("#CatEditName").val(),
-        url_cat: $("#CatEditUrl").val(),
-        id_cat: $('#l-EditCategory').data("id")
+        name_subc: $("#SubCatEditName").val(),
+        url_subc: $("#SubCatEditUrl").val(),
+        id_subc: $('#l-EditSubCategory').data("id_subc") //  "id_subc" define in SubCategory placeholder
     }
 
-    let res = await labPost("edit", JSON.stringify(out))
+    let res = await labPost("Subedit", JSON.stringify(out))
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -227,7 +227,7 @@ async function labStart() {
 
         $(this).find('#CatEditName').val(EditingName)
         $(this).find('#CatEditUrl').val(EditingUrl)
-        $(this).data('id', EditingId)
+        $(this).data('cat_id', EditingId)
     })
 
     // Category search
@@ -242,31 +242,20 @@ async function labStart() {
 
     // SubCategory modals
     $("#SUBCATADD").click(SUBCATADD)
-    $("#SubCATEDIT").click(SUBCATEDIT)
-        // SubCategory placeholder
-    $('#l-EditSubCategory').on('show.bs.modal', function(event) {
-        let button = $(event.relatedTarget)
-        let EditingName = button.data('modal_name_subc')
-        let EditingUrl = button.data('modal_url_subc')
-        let EditingId = button.data('modal_id_cat')
-
-        $(this).find('#SubCatEditName').val(EditingName)
-        $(this).find('#SubCatEditUrl').val(EditingUrl)
-        $(this).data('id', EditingId)
-    })
-
+    $("#SUBCATEDIT").click(SUBCATEDIT)
 
     // SubCategory placeholder
     $('#l-EditSubCategory').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget)
         let EditingName = button.data('modal_name_subc')
         let EditingUrl = button.data('modal_url_subc')
-        let EditingId = button.data('modal_id_cat')
+        let EditingId = button.data('modal_id_subc')
 
         $(this).find('#SubCatEditName').val(EditingName)
         $(this).find('#SubCatEditUrl').val(EditingUrl)
-        $(this).data('id', EditingId)
+        $(this).data('id_subc', EditingId)
     })
+
 
 
 }

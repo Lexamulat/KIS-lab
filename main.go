@@ -52,6 +52,7 @@ func main() {
 	///sub
 	router.HandleFunc("/Sublist", h.SubGetList).Methods("POST")
 	router.HandleFunc("/Subinsert", h.SubInsert).Methods("POST")
+	router.HandleFunc("/Subedit", h.SubEdit).Methods("POST")
 
 	router.PathPrefix("/static/").Handler(s)
 

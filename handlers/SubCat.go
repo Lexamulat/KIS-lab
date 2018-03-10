@@ -68,3 +68,35 @@ func SubInsert(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 
 }
+
+func SubEdit(w http.ResponseWriter, r *http.Request) {
+
+	body, _ := ioutil.ReadAll(r.Body)
+	affected := int64(0)
+
+	idsubc, err := jsonparser.GetInt(body, "id_subc")
+
+	if err != nil {
+		fmt.Println("err")
+		log.Fatal(err)
+	}
+
+	namesubc, err := jsonparser.GetString(body, "name_subc")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	urlsubc, err := jsonparser.GetString(body, "url_subc")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := DB.Exec("UPDATE Subcategory SET name_subc = ?, url_subc=?  WHERE id_subc = ?",
+		namesubc, urlsubc, strconv.Itoa(int(idsubc)))
+
+	if err == nil {
+		affected, _ = res.RowsAffected()
+	}
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}

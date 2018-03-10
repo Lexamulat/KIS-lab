@@ -197,7 +197,11 @@ async function SUBCATEDIT() {
         LAB.toast("Ошибка редактирвоания")
     }
 
-    update()
+
+    var CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+
+    await Subupdate(JSON.stringify(CurrentActiveCat))
+
 }
 
 // async function TH() {

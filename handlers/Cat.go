@@ -36,8 +36,6 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 
 func Insert(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println("insert")
-
 	affected := int64(0)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -56,10 +54,9 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	res, err := DB.Exec("INSERT INTO Category(name_cat, url_cat) VALUES(?,?)", name, url)
 
 	if err == nil {
-		fmt.Println("here")
+
 		affected, _ = res.RowsAffected()
 	}
-	fmt.Println(affected)
 
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }

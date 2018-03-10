@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/buger/jsonparser"
 )
@@ -40,8 +41,30 @@ func SubGetList(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(outJSON))
 }
 
-func Test(w http.ResponseWriter, r *http.Request) {
+func SubInsert(w http.ResponseWriter, r *http.Request) {
+	affected := int64(0)
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	idcat, err := jsonparser.GetInt(body, "id_cat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	namesubc, err := jsonparser.GetString(body, "name_subc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	urlsubc, err := jsonparser.GetString(body, "url_subc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := DB.Exec("INSERT INTO Subcategory(id_cat, name_subc,url_subc) VALUES(?,?,?)", idcat, namesubc, urlsubc)
+	if err == nil {
 
-	fmt.Println("test")
+		affected, _ = res.RowsAffected()
+	}
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 
 }

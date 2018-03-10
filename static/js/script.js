@@ -53,18 +53,18 @@ async function Subupdate(cat_id) {
 
 
 async function SUBCATADD() {
-    var ig = $('.list-group-item.list-group-item-action.l-cat-elem.active').data('cat_id'); //find current active from cat for insert in subcat
+    var ig = $('.list-group-item.active').data('cat_id'); //find current active from cat for insert in subcat
 
     let out = {
-        name_cat: $("#name_subc").val(),
-        url_cat: $("#url_subc").val(),
-        id_subc: ig
+        name_subc: $("#name_subc").val(),
+        url_subc: $("#url_subc").val(),
+        id_cat: ig
     }
 
-    // document.getElementById("name_subc").value = "";
-    // document.getElementById("url_subc").value = "";
+    document.getElementById("name_subc").value = "";
+    document.getElementById("url_subc").value = "";
 
-    let res = await labPost("insert", JSON.stringify(out))
+    let res = await labPost("Subinsert", JSON.stringify(out))
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -137,17 +137,11 @@ function SubcatUpdate(dataSubCat) {
     list.children().first().addClass("active")
 }
 
-// async function CatDelete() {
 
-//     let id = $(e.currentTarget).parent().data('cat_id')
-//     await labPost("del", id.toString())
-//     await update()
-
-// }
 
 // filling in the category table
 async function catUpdate(dataCat) {
-    console.log("4")
+
     let list = $("#listCategory")
     list.empty()
 
@@ -167,7 +161,7 @@ async function catUpdate(dataCat) {
 
         list.append(listEl)
     }
-    console.log("5")
+
     list.children().first().addClass("active")
 }
 
@@ -188,6 +182,23 @@ async function CATEDIT() {
     update()
 }
 
+
+async function SUBCATEDIT() {
+    let out = {
+        name_cat: $("#CatEditName").val(),
+        url_cat: $("#CatEditUrl").val(),
+        id_cat: $('#l-EditCategory').data("id")
+    }
+
+    let res = await labPost("edit", JSON.stringify(out))
+    if (res) {
+        LAB.toast("Успешно")
+    } else {
+        LAB.toast("Ошибка редактирвоания")
+    }
+
+    update()
+}
 
 // async function TH() {
 //     console.log("test")
@@ -229,23 +240,9 @@ async function labStart() {
         LAB.toast(`Найдено: ${res.length}`)
     });
 
-
-    // $('.CategoryDelete').click(async(e) => {
-    //     let id = $(e.currentTarget).parent().data('cat_id')
-    //     console.log("--------------------------")
-    //     console.log("1")
-    //     await labPost("del", id.toString())
-    //     console.log("2")
-    //     await update()
-    //     console.log("8")
-
-    //     // await Subupdate(JSON.stringify($(e.currentTarget).data('cat_id')))
-
-    // })
-
-
     // SubCategory modals
     $("#SUBCATADD").click(SUBCATADD)
+    $("#SubCATEDIT").click(SUBCATEDIT)
         // SubCategory placeholder
     $('#l-EditSubCategory').on('show.bs.modal', function(event) {
         let button = $(event.relatedTarget)

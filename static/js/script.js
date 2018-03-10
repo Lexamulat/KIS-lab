@@ -15,7 +15,7 @@ const LAB = {
 function labPost(url, postData) {
     return new Promise(resolve => {
         // console.log(postData)
-        $.post(url, postData, function(data, textStatus) {
+        $.post(url, JSON.stringify(postData), function(data, textStatus) {
             resolve(data)
         }, "json");
     });
@@ -59,7 +59,8 @@ async function Subupdate(cat_id) {
         console.log("del")
             // await labPost("Subdel", JSON.stringify(id))
         let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
-        await Subupdate(CurrentActiveCat)
+
+        await Subupdate(CurrentActiveCat.toString())
     })
     $(".l-Subcat-elem").click(async(t) => {
         $(".l-Subcat-elem").removeClass('active')
@@ -82,7 +83,7 @@ async function SUBCATADD() {
     document.getElementById("name_subc").value = "";
     document.getElementById("url_subc").value = "";
 
-    let res = await labPost("Subinsert", JSON.stringify(out))
+    let res = await labPost("Subinsert", out)
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -104,7 +105,7 @@ async function CATADD() {
     document.getElementById("name_cat").value = "";
     document.getElementById("url_cat").value = "";
 
-    let res = await labPost("insert", JSON.stringify(out))
+    let res = await labPost("insert", out)
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -211,7 +212,7 @@ async function CATEDIT() {
         id_cat: $('#l-EditCategory').data("cat_id") //  "id" define in SubCategory placeholder
     }
 
-    let res = await labPost("edit", JSON.stringify(out))
+    let res = await labPost("edit", out)
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -245,7 +246,7 @@ async function SUBCATEDIT() {
         id_subc: $('#l-EditSubCategory').data("id_subc") //  "id_subc" define in SubCategory placeholder
     }
 
-    let res = await labPost("Subedit", JSON.stringify(out))
+    let res = await labPost("Subedit", out)
     if (res) {
         LAB.toast("Успешно")
     } else {
@@ -325,7 +326,7 @@ async function labStart() {
                 CurrentActiveCat: CurrentActiveCat
             }
             // let res = await Subupdate(JSON.stringify(text))
-        let res = await labPost("Subsearch", JSON.stringify(out))
+        let res = await labPost("Subsearch", out)
 
 
         SubcatUpdate(res)

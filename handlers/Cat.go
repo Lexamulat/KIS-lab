@@ -130,7 +130,7 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 	// sortType := string(bodyBytes)
 
 	//ASC / DESC
-	rows, err := DB.Query(`SELECT * FROM Category ORDER BY name_cat `)
+	rows, err := DB.Query(`SELECT * FROM Category ORDER BY name_cat`)
 
 	if err != nil {
 		log.Fatal(err)

@@ -31,11 +31,13 @@ async function update() {
     $('.CategoryDelete').click(async(e) => {
         e.stopPropagation();
 
-        console.log(e.currentTarget)
-        let id = $(e.currentTarget).parent().data('cat_id')
-
-        await labPost("del", id.toString())
-        await update()
+        // console.log(e.currentTarget)
+        // let id1 = $(e.currentTarget).parent().data('cat_id')
+        // console.log(id1)
+        let id2 = $(e.currentTarget).data('id')
+        console.log(id2)
+            //await labPost("del", id.toString())
+            //await update()
     })
 
     // change active status from Category on clic
@@ -54,6 +56,7 @@ async function Subupdate(cat_id) {
     $('.SubCategoryDelete').click(async(c) => {
         // c.stopPropagation();
         let id = $(c.currentTarget).data('id_subc')
+        console.log("del")
             // await labPost("Subdel", JSON.stringify(id))
         let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
         await Subupdate(CurrentActiveCat)

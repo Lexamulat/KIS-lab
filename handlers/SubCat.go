@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/buger/jsonparser"
 )
@@ -99,4 +100,37 @@ func SubEdit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}
+
+func SubSearch(w http.ResponseWriter, r *http.Request) {
+	body, _ := ioutil.ReadAll(r.Body)
+
+	name_subc, err := jsonparser.GetString(body, "name_subc")
+	if err != nil {
+		log.Fatal(err)
+	}
+	CurrentActiveCat, err := jsonparser.GetInt(body, "CurrentActiveCat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	//bodyString := string(bodyBytes)
+
+	qry := fmt.Sprintf(`SELECT * FROM Subcategory WHERE id_cat=%d AND
+		GoToLower(name_subc, '%s') = 1`, CurrentActiveCat, strings.ToLower(name_subc))
+
+	rows, err := DB.Query(qry)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	el2 := []DBSubCategory{}
+	for rows.Next() {
+		var temp DBSubCategory
+		rows.Scan(&temp.Idsubc, &temp.Idcat, &temp.Namesubc, &temp.Urlsubc)
+		el2 = append(el2, temp)
+
+	}
+
+	outJSON, _ := json.Marshal(el2)
+	fmt.Fprintf(w, string(outJSON))
 }

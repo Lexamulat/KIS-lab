@@ -46,8 +46,6 @@ async function update() {
 
 async function Subupdate(cat_id) {
     const dataSubCat = await labPost("Sublist", cat_id)
-    console.log(dataSubCat)
-
     SubcatUpdate(dataSubCat)
 }
 
@@ -135,6 +133,12 @@ function SubcatUpdate(dataSubCat) {
         list.append(listEl)
     }
     list.children().first().addClass("active")
+    $(".l-Subcat-elem").click(async(t) => {
+        $(".l-Subcat-elem").removeClass('active')
+        $(t.currentTarget).addClass("active")
+
+        // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
+    })
 }
 
 
@@ -198,7 +202,7 @@ async function SUBCATEDIT() {
     }
 
 
-    var CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+    let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
 
     await Subupdate(JSON.stringify(CurrentActiveCat))
 
@@ -260,7 +264,21 @@ async function labStart() {
         $(this).data('id_subc', EditingId)
     })
 
+    // SubCategory search
+    $('#SubCatSearch').on('input', async function() {
+        let text = $('#SubCatSearch').val()
+        let CurrentActiveCat = $('.list-group-item.active').data('cat_id'); //  "id" define in SubCategory placeholder
+        let out = {
+                name_subc: text,
+                CurrentActiveCat: CurrentActiveCat
+            }
+            // let res = await Subupdate(JSON.stringify(text))
+        let res = await labPost("Subsearch", JSON.stringify(out))
 
+
+        SubcatUpdate(res)
+        LAB.toast(`Найдено: ${res.length}`)
+    });
 
 }
 

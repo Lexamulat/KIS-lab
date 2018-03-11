@@ -184,7 +184,7 @@ async function catUpdate(dataCat) {
                 <button type="button" class="btn btn-danger btn-sm l-button_action CategoryDelete" data-toggle="modal" data-target="#l-DeleteCategory" data-id=${el.id}>
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                 </button>  
-                <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name=${el.name} data-modal_url=${el.url}>
+                <button type="button" class="btn btn-success btn-sm l-button_action CategoryEdit" data-toggle="modal" data-target="#l-EditCategory" data-modal_id=${el.id} data-modal_name="${el.name}" data-modal_url="${el.url}">
                     <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                 </button>
             </div>`
@@ -219,7 +219,7 @@ async function ModelUpdateWriter(dataModel) {
                         <button type="button" class="btn btn-danger btn-sm l-button_action   ModDelete" data-id_mod=${el.id_mod}>
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                         </button>
-                        <button type="button" class="btn btn-success btn-sm l-button_action  ModEdit" data-toggle="modal" data-target="#l-EditModel" data-modal_id_mod=${el.id_mod} data-modal_name_mod=${el.name_mod} data-modal_price=${el.price} data-modal_description=${el.description} data-modal_pricture="${el.picture}">
+                        <button type="button" class="btn btn-success btn-sm l-button_action  ModEdit" data-toggle="modal" data-target="#l-EditModel" data-modal_id_mod="${el.id_mod}" data-modal_name_mod="${el.name_mod}" data-modal_price="${el.price}" data-modal_description="${el.description}" data-modal_pricture="${el.picture}">
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                         </button>
                     </span>
@@ -281,35 +281,20 @@ async function SUBCATEDIT() {
 async function MODEDIT() {
 
     console.log("editmod")
+
+    let out = {
+        id_mod: $('#l-EditModel').data("id_mod"),
+        name_mod: $("#ModEditName").val(),
+        price: $("#ModEditPrice").val(),
+        description: $("#ModEditDescription").val(),
+        picture: picture.getAttribute('src')
+    }
+
+    let res = await labPost("Modedit", out)
 }
 
 
-function upload(file) {
-    console.log("loading")
-        //     /* Is the file an image? */
-        // if (!file || !file.type.match(/image.*/)) return;
-
-    // /* It is! */
-    // document.body.className = "uploading";
-
-    // /* Lets build a FormData object*/
-    // var fd = new FormData(); // I wrote about it: https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/
-    // fd.append("image", file); // Append the file
-    // var xhr = new XMLHttpRequest(); // Create the XHR (Cross-Domain XHR FTW!!!) Thank you sooooo much imgur.com
-    // xhr.open("POST", "https://api.imgur.com/3/image.json"); // Boooom!
-    // xhr.onload = function() {
-    //     // Big win!
-    //     document.querySelector("#link").href = JSON.parse(xhr.responseText).data.link;
-    //     document.body.className = "uploaded";
-    // }
-
-    // xhr.setRequestHeader('Authorization', 'Client-ID 28aaa2e823b03b1'); // Get your own key http://api.imgur.com/
-
-    // // Ok, I don't handle the errors. An exercise for the reader.
-
-    // /* And now, we send the formdata */
-    // xhr.send(fd);
-}
+// picture.getAttribute('src')
 
 async function labStart() {
     await update()
@@ -319,16 +304,12 @@ async function labStart() {
     $("#CATEDIT").click(CATEDIT)
 
 
-    ///////////////////////////
-    ///////////////////////////
-    ///////////////////////////
-    ///////////////////////////
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function(e) {
-                $('#blah').attr('src', e.target.result);
+                $('#picture').attr('src', e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
@@ -338,11 +319,6 @@ async function labStart() {
     $("#imgInp").change(function() {
         readURL(this);
     });
-    ///////////////////////////
-    ///////////////////////////
-    ///////////////////////////
-    ///////////////////////////
-    ///////////////////////////
 
     // Category placeholder
     $('#l-EditCategory').on('show.bs.modal', function(event) {
@@ -415,9 +391,7 @@ async function labStart() {
         $(this).find('#ModEditName').val(EditingName)
         $(this).find('#ModEditDescription').val(EditingDescription)
         $(this).find('#ModEditPrice').val(EditingPrice)
-
-        $("#blah").attr("src", EditingPicture)
-
+        $("#picture").attr("src", EditingPicture)
         $(this).data('id_mod', EditingId)
     })
 

@@ -74,3 +74,37 @@ func ModSearch(w http.ResponseWriter, r *http.Request) {
 	affected, _ := res.RowsAffected()
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }
+
+func ModEdit(w http.ResponseWriter, r *http.Request) {
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	affected := int64(0)
+
+	idmod, err := jsonparser.GetInt(bodyBytes, "id_mod")
+	if err != nil {
+		log.Fatal(err)
+	}
+	namemod, err := jsonparser.GetString(bodyBytes, "name_mod")
+	if err != nil {
+		log.Fatal(err)
+	}
+	price, err := jsonparser.GetString(bodyBytes, "price")
+	if err != nil {
+		log.Fatal(err)
+	}
+	description, err := jsonparser.GetString(bodyBytes, "description")
+	if err != nil {
+		log.Fatal(err)
+	}
+	picture, err := jsonparser.GetString(bodyBytes, "picture")
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := DB.Exec("UPDATE Model SET name_mod = ?, price=?,description=?,picture=? WHERE id_mod = ?",
+		namemod, price, description, picture, idmod)
+
+	if err == nil {
+		affected, _ = res.RowsAffected()
+	}
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}

@@ -27,6 +27,8 @@ async function update() {
     await Subupdate((dataCat[0].id).toString()) // (take id from first in category and select with this id to SubCat) 
 
 
+
+
     // Category remove
     $('.CategoryDelete').click(async(e) => {
         e.stopPropagation();
@@ -40,7 +42,7 @@ async function update() {
     $(".l-cat-elem").click(async(t) => {
         $(".l-cat-elem").removeClass('active')
         $(t.currentTarget).addClass("active")
-
+            // console.log($(t.currentTarget).data('cat_id'))
         await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
     })
 }
@@ -48,6 +50,9 @@ async function update() {
 async function Subupdate(cat_id) {
     const dataSubCat = await labPost("Sublist", cat_id)
     await SubcatUpdate(dataSubCat)
+        //console.log(dataSubCat[0].id_subc)
+
+    await ModelUpdate((dataSubCat[0].id_subc).toString())
 
     $('.SubCategoryDelete').click(async(c) => {
         // c.stopPropagation();
@@ -61,9 +66,38 @@ async function Subupdate(cat_id) {
     $(".l-Subcat-elem").click(async(t) => {
         $(".l-Subcat-elem").removeClass('active')
         $(t.currentTarget).addClass("active")
-
-        // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
+        console.log($(t.currentTarget).data('id_subc'))
+        await ModelUpdate(JSON.stringify($(t.currentTarget).data('id_subc')))
+            // await ModelUpdate(JSON.stringify($(t.currentTarget).data('id_subc')))
+            // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
     })
+}
+
+
+async function ModelUpdate(id_subc) {
+    const dataModel = await labPost("Modlist", id_subc)
+    await ModelUpdateWriter(dataModel)
+
+
+    //console.log(dataSubCat[0].id_subc)
+
+
+
+    // $('.SubCategoryDelete').click(async(c) => {
+    //     // c.stopPropagation();
+    //     let id = $(c.currentTarget).data('id_subc')
+    //     console.log("del")
+    //     await labPost("Subdel", id.toString())
+    //     let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+
+    //     await Subupdate(CurrentActiveCat.toString())
+    // })
+    // $(".l-Subcat-elem").click(async(t) => {
+    //     $(".l-Subcat-elem").removeClass('active')
+    //     $(t.currentTarget).addClass("active")
+
+    //     // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
+    // })
 }
 
 
@@ -122,7 +156,7 @@ function SubcatUpdate(dataSubCat) {
         const el = dataSubCat[i];
 
         let listEl = `
-            <div class="list-group-item list-group-item-action l-Subcat-elem data-id_subc=${el.id_subc}">
+            <div class="list-group-item list-group-item-action l-Subcat-elem" data-id_subc=${el.id_subc}>
                 ${el.name_subc}
                 <button type="button" class="btn btn-danger btn-sm l-button_action SubCategoryDelete" data-id_subc=${el.id_subc}>
                 <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
@@ -164,6 +198,50 @@ async function catUpdate(dataCat) {
 
     list.children().first().addClass("active")
 }
+
+
+// async function ModelUpdate(dataCat)
+async function ModelUpdateWriter(dataModel) {
+
+    let list = $("#listModel")
+    list.empty()
+
+    for (let i = 0; i < dataModel.length; i++) {
+        const el = dataModel[i];
+
+        let listEl = `
+        <div class="list-group-item list-group-item-action flex-column align-items-start  l-mod-elem">
+
+        <div class="row l-model_item">
+
+            <img src="${el.picture}" class="rounded float-left l-model_item-img">
+            <div class="l-model_item-about">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${el.name_mod}</h5>
+
+                    <span>
+                        <button type="button" class="btn btn-danger btn-sm l-button_action">
+                            <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm l-button_action">
+                            <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
+                        </button>
+                    </span>
+                </div>
+                <p class="mb-1">${el.description}</p>
+                <h3>${el.price} ₽</h3>
+            </div>
+        </div>
+
+    </div>`
+
+        list.append(listEl)
+    }
+
+    list.children().first().addClass("active")
+}
+
+
 
 async function CATEDIT() {
     let out = {

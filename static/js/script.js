@@ -219,7 +219,7 @@ async function ModelUpdateWriter(dataModel) {
                         <button type="button" class="btn btn-danger btn-sm l-button_action   ModDelete" data-id_mod=${el.id_mod}>
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                         </button>
-                        <button type="button" class="btn btn-success btn-sm l-button_action  ModEdit" data-toggle="modal" data-target="#l-EditModel" data-modal_id_mod=${el.id_mod} data-modal_name_mod=${el.name_mod} data-modal_price=${el.price} data-modal_description=${el.description} data-modal_pricture=${el.picture}>
+                        <button type="button" class="btn btn-success btn-sm l-button_action  ModEdit" data-toggle="modal" data-target="#l-EditModel" data-modal_id_mod=${el.id_mod} data-modal_name_mod=${el.name_mod} data-modal_price=${el.price} data-modal_description=${el.description} data-modal_pricture="${el.picture}">
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                         </button>
                     </span>
@@ -280,20 +280,7 @@ async function SUBCATEDIT() {
 
 async function MODEDIT() {
 
-    //console.log("editmod")
-}
-
-
-function readURL(e) {
     console.log("editmod")
-    if (this.files && this.files[0]) {
-        var reader = new FileReader();
-        $(reader).load(function(e) {
-            $('#upload-img').attr('src', e.target.result);
-        });
-        $(reader.readAsDataURL(this.files[0]));
-        //console.log(reader.readAsDataURL(this.files[0]))
-    }
 }
 
 
@@ -326,14 +313,36 @@ function upload(file) {
 
 async function labStart() {
     await update()
-    $("#upload").change(readURL);
-    // Category modals
+        // $("#upload").change(readURL);
+        // Category modals
     $("#CATADD").click(CATADD)
     $("#CATEDIT").click(CATEDIT)
 
 
-    //$("#three").click(TH)
+    ///////////////////////////
+    ///////////////////////////
+    ///////////////////////////
+    ///////////////////////////
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
+            reader.onload = function(e) {
+                $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgInp").change(function() {
+        readURL(this);
+    });
+    ///////////////////////////
+    ///////////////////////////
+    ///////////////////////////
+    ///////////////////////////
+    ///////////////////////////
 
     // Category placeholder
     $('#l-EditCategory').on('show.bs.modal', function(event) {
@@ -406,7 +415,8 @@ async function labStart() {
         $(this).find('#ModEditName').val(EditingName)
         $(this).find('#ModEditDescription').val(EditingDescription)
         $(this).find('#ModEditPrice').val(EditingPrice)
-            //нужно взять img
+
+        $("#blah").attr("src", EditingPicture)
 
         $(this).data('id_mod', EditingId)
     })

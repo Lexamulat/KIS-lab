@@ -428,8 +428,14 @@ async function labStart() {
 
     $('#ModSearch').on('input', async function() {
         let text = $('#ModSearch').val()
-        let res = await labPost("search", text)
-        catUpdate(res)
+        let CurrentActiveSubCat = $('.list-group-item.l-Subcat-elem.active').data('id_subc');
+        let out = {
+            name_mod: text,
+            CurrentActiveSubCat: CurrentActiveSubCat
+        }
+        let res = await labPost("Modsearch", out)
+            //catUpdate(res)
+        ModelUpdateWriter(res)
         LAB.toast(`Найдено: ${res.length}`)
     });
 

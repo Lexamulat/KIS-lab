@@ -138,7 +138,7 @@ func SubSearch(w http.ResponseWriter, r *http.Request) {
 
 func SubDeleteItem(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	id := string(bodyBytes)
+	id, _ := jsonparser.GetString(bodyBytes)
 
 	res, err := DB.Exec("DELETE FROM Subcategory WHERE id_subc = ?", id)
 

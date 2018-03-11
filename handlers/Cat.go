@@ -66,7 +66,7 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 	bodyString := string(bodyBytes)
 
 	qry := fmt.Sprintf(`SELECT * FROM Category WHERE 
-		GoToLower(name_cat, '%s') = 1`, strings.ToLower(bodyString))
+		GoToLower(name_cat, %s) = 1`, strings.ToLower(bodyString))
 
 	rows, err := DB.Query(qry)
 	if err != nil {
@@ -101,7 +101,7 @@ func Restore(w http.ResponseWriter, r *http.Request) {
 
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, _ := ioutil.ReadAll(r.Body)
-	id := string(bodyBytes)
+	id, err := jsonparser.GetString(bodyBytes)
 
 	rows, err := DB.Query(`SELECT * FROM Category WHERE id_cat = ?`, id)
 

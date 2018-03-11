@@ -30,14 +30,10 @@ async function update() {
     // Category remove
     $('.CategoryDelete').click(async(e) => {
         e.stopPropagation();
-
-        // console.log(e.currentTarget)
-        // let id1 = $(e.currentTarget).parent().data('cat_id')
-        // console.log(id1)
         let id2 = $(e.currentTarget).data('id')
         console.log(id2)
-            //await labPost("del", id.toString())
-            //await update()
+        await labPost("del", id2.toString())
+        await update()
     })
 
     // change active status from Category on clic
@@ -57,7 +53,7 @@ async function Subupdate(cat_id) {
         // c.stopPropagation();
         let id = $(c.currentTarget).data('id_subc')
         console.log("del")
-            // await labPost("Subdel", JSON.stringify(id))
+        await labPost("Subdel", id.toString())
         let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
 
         await Subupdate(CurrentActiveCat.toString())
@@ -115,27 +111,11 @@ async function CATADD() {
     update()
 }
 
-// async function CATEDIT() {
-//     let out = {
-//         name_cat: $("#CatEditName").val(),
-//         url_cat: $("#CatEditUrl").val(),
-//         id_cat: $('#l-EditCategory').data("id")
-//     }
-
-//     let res = await labPost("edit", JSON.stringify(out))
-//     if (res) {
-//         LAB.toast("Успешно")
-//     } else {
-//         LAB.toast("Ошибка редактирвоания")
-//     }
-
-//     update()
-// }
 
 // filling in the SUBcategory table
 
 function SubcatUpdate(dataSubCat) {
-    console.log("SUBCATUPD")
+
     let list = $("#listSubCategory")
     list.empty()
     for (let i = 0; i < dataSubCat.length; i++) {
@@ -155,29 +135,9 @@ function SubcatUpdate(dataSubCat) {
         list.append(listEl)
     }
 
-
-
-    // $('.SubCategoryDelete').click(async(c) => {
-    //      c.stopPropagation();
-    //     let id = $(c.currentTarget).parent().data('id_subc')
-    //     console.log(id)
-    //         // await labPost("Subdel", JSON.stringify(id))
-    //         // let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
-
-    //     // await Subupdate(JSON.stringify(CurrentActiveCat))
-    //     //await update()
-    // })
-
     list.children().first().addClass("active")
-        // $(".l-Subcat-elem").click(async(t) => {
-        //     $(".l-Subcat-elem").removeClass('active')
-        //     $(t.currentTarget).addClass("active")
 
-    //     // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
-    // })
 }
-
-
 
 // filling in the category table
 async function catUpdate(dataCat) {
@@ -222,23 +182,6 @@ async function CATEDIT() {
     update()
 }
 
-
-// async function SubCategoryDelete() {
-//     console.log("subDel")
-
-
-//     // let id = $(currentTarget).parent().data('id_subc')
-//     // console.log(id)
-//     // await labPost("Subdel", JSON.stringify(id))
-//     // let CurrentActiveCat = $('.l-Subcat-elem.active').data('cat_id');
-//     // console.log(CurrentActiveCat)
-//         // await Subupdate(JSON.stringify(CurrentActiveCat))
-//         //await update()
-
-
-// }
-
-
 async function SUBCATEDIT() {
     let out = {
         name_subc: $("#SubCatEditName").val(),
@@ -259,12 +202,6 @@ async function SUBCATEDIT() {
     await Subupdate(JSON.stringify(CurrentActiveCat))
 
 }
-
-// async function TH() {
-//     console.log("test")
-//     await labPost("test")
-//     console.log("after")
-// }
 
 
 async function labStart() {
@@ -294,7 +231,12 @@ async function labStart() {
     $('#CatSearch').on('input', async function() {
         let text = $('#CatSearch').val()
 
+
         let res = await labPost("search", text)
+
+        // let res = await labPost("search", text.toString())
+
+        //let res = await labPost("Subsearch", JSON.stringify(out))
 
         catUpdate(res)
         LAB.toast(`Найдено: ${res.length}`)
@@ -327,7 +269,7 @@ async function labStart() {
             }
             // let res = await Subupdate(JSON.stringify(text))
         let res = await labPost("Subsearch", out)
-
+            //await Subupdate(JSON.stringify(CurrentActiveCat))
 
         SubcatUpdate(res)
         LAB.toast(`Найдено: ${res.length}`)

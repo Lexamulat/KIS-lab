@@ -58,6 +58,7 @@ func main() {
 	//Model
 	router.HandleFunc("/Modlist", h.ModGetList).Methods("POST")
 	router.HandleFunc("/Moddel", h.ModDeleteItem).Methods("POST")
+	router.HandleFunc("/Modsearch", h.ModSearch).Methods("POST")
 
 	router.PathPrefix("/static/").Handler(s)
 

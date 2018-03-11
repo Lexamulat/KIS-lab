@@ -59,3 +59,18 @@ func ModDeleteItem(w http.ResponseWriter, r *http.Request) {
 	affected, _ := res.RowsAffected()
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }
+
+func ModSearch(w http.ResponseWriter, r *http.Request) {
+
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	id, _ := jsonparser.GetString(bodyBytes)
+
+	res, err := DB.Exec("DELETE FROM Model WHERE id_mod = ?", id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	affected, _ := res.RowsAffected()
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}

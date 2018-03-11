@@ -219,7 +219,7 @@ async function ModelUpdateWriter(dataModel) {
                         <button type="button" class="btn btn-danger btn-sm l-button_action   ModDelete" data-id_mod=${el.id_mod}>
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                         </button>
-                        <button type="button" class="btn btn-success btn-sm l-button_action">
+                        <button type="button" class="btn btn-success btn-sm l-button_action  ModEdit" data-toggle="modal" data-target="#l-EditModel" data-modal_id_mod=${el.id_mod} data-modal_name_mod=${el.name_mod} data-modal_price=${el.price} data-modal_description=${el.description} data-modal_pricture=${el.picture}>
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-pencil"></use></svg>
                         </button>
                     </span>
@@ -275,6 +275,11 @@ async function SUBCATEDIT() {
 
     await Subupdate(JSON.stringify(CurrentActiveCat))
 
+}
+
+
+async function MODEDIT() {
+    console.log("editmod")
 }
 
 
@@ -348,6 +353,30 @@ async function labStart() {
         SubcatUpdate(res)
         LAB.toast(`Найдено: ${res.length}`)
     });
+
+
+
+    //Model modals
+    $("#MODEDIT").click(MODEDIT)
+
+
+    // SubCategory placeholder
+    $('#l-EditModel').on('show.bs.modal', function(event) {
+        let button = $(event.relatedTarget)
+        let EditingName = button.data('modal_name_mod')
+        let EditingPrice = button.data('modal_price')
+        let EditingDescription = button.data('modal_description')
+        let EditingPicture = button.data('modal_pricture')
+        let EditingId = button.data('modal_id_mod')
+
+        $(this).find('#ModEditName').val(EditingName)
+        $(this).find('#ModEditDescription').val(EditingDescription)
+        $(this).find('#ModEditPrice').val(EditingPrice)
+            //нужно взять img
+
+        $(this).data('id_mod', EditingId)
+    })
+
 
 }
 

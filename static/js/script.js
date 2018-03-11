@@ -33,7 +33,7 @@ async function update() {
     $('.CategoryDelete').click(async(e) => {
         e.stopPropagation();
         let id2 = $(e.currentTarget).data('id')
-        console.log(id2)
+
         await labPost("del", id2.toString())
         await update()
     })
@@ -55,21 +55,18 @@ async function Subupdate(cat_id) {
     await ModelUpdate((dataSubCat[0].id_subc).toString())
 
     $('.SubCategoryDelete').click(async(c) => {
-        // c.stopPropagation();
+        //c.stopPropagation();
         let id = $(c.currentTarget).data('id_subc')
-        console.log("del")
+
         await labPost("Subdel", id.toString())
-        let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+        let CurrentActiveCat = $('.list-group-item.l-cat-elem.active').data('cat_id');
 
         await Subupdate(CurrentActiveCat.toString())
     })
     $(".l-Subcat-elem").click(async(t) => {
         $(".l-Subcat-elem").removeClass('active')
         $(t.currentTarget).addClass("active")
-        console.log($(t.currentTarget).data('id_subc'))
         await ModelUpdate(JSON.stringify($(t.currentTarget).data('id_subc')))
-            // await ModelUpdate(JSON.stringify($(t.currentTarget).data('id_subc')))
-            // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
     })
 }
 
@@ -79,25 +76,24 @@ async function ModelUpdate(id_subc) {
     await ModelUpdateWriter(dataModel)
 
 
-    //console.log(dataSubCat[0].id_subc)
 
 
+    $('.ModDelete').click(async(c) => {
+        //c.stopPropagation();
+        let id = $(c.currentTarget).data('id_mod')
+        console.log("del")
+        await labPost("Moddel", id.toString())
+        let CurrentActiveSubCat = $('.list-group-item.l-Subcat-elem.active').data('id_subc');
 
-    // $('.SubCategoryDelete').click(async(c) => {
-    //     // c.stopPropagation();
-    //     let id = $(c.currentTarget).data('id_subc')
-    //     console.log("del")
-    //     await labPost("Subdel", id.toString())
-    //     let CurrentActiveCat = $('.list-group-item.active').data('cat_id');
+        await ModelUpdate(CurrentActiveSubCat.toString())
+    })
 
-    //     await Subupdate(CurrentActiveCat.toString())
-    // })
-    // $(".l-Subcat-elem").click(async(t) => {
-    //     $(".l-Subcat-elem").removeClass('active')
-    //     $(t.currentTarget).addClass("active")
+    $(".l-mod-elem").click(async(t) => {
+        $(".l-mod-elem").removeClass('active')
+        $(t.currentTarget).addClass("active")
+    })
 
-    //     // await Subupdate(JSON.stringify($(t.currentTarget).data('cat_id'))) //(put id from chosen point from category to json for serv)
-    // })
+
 }
 
 
@@ -220,7 +216,7 @@ async function ModelUpdateWriter(dataModel) {
                     <h5 class="mb-1">${el.name_mod}</h5>
 
                     <span>
-                        <button type="button" class="btn btn-danger btn-sm l-button_action">
+                        <button type="button" class="btn btn-danger btn-sm l-button_action   ModDelete" data-id_mod=${el.id_mod}>
                             <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-bin"></use></svg>
                         </button>
                         <button type="button" class="btn btn-success btn-sm l-button_action">

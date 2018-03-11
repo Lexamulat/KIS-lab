@@ -108,3 +108,38 @@ func ModEdit(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, strconv.Itoa(int(affected)))
 }
+func ModInsert(w http.ResponseWriter, r *http.Request) {
+
+	affected := int64(0)
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	idsubcat, err := jsonparser.GetInt(body, "id_subcat")
+	if err != nil {
+		log.Fatal(err)
+	}
+	name_mod, err := jsonparser.GetString(body, "name_mod")
+	if err != nil {
+		log.Fatal(err)
+	}
+	price, err := jsonparser.GetString(body, "price")
+	if err != nil {
+		log.Fatal(err)
+	}
+	description, err := jsonparser.GetString(body, "description")
+	if err != nil {
+		log.Fatal(err)
+	}
+	picture, err := jsonparser.GetString(body, "picture")
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := DB.Exec("INSERT INTO Model(id_subcat, name_mod,price,description,picture) VALUES(?,?,?,?,?)", idsubcat, name_mod, price, description, picture)
+	if err == nil {
+
+		affected, _ = res.RowsAffected()
+	}
+
+	fmt.Fprintf(w, strconv.Itoa(int(affected)))
+}

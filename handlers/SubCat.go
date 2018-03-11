@@ -61,7 +61,7 @@ func SubInsert(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	res, err := DB.Exec("INSERT INTO Subcategory(id_cat, name_subc,url_subc) VALUES(?,?,?)", idcat, namesubc, urlsubc)
+	res, err := DB.Exec("INSERT INTO Subcategory(id_cat, aname_subc,url_subc) VALUES(?,?,?)", idcat, namesubc, urlsubc)
 	if err == nil {
 
 		affected, _ = res.RowsAffected()

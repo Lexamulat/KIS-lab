@@ -141,6 +141,24 @@ async function CATADD() {
     update()
 }
 
+async function MODADD() {
+    let CurrentActiveSubCat = $('.list-group-item.l-Subcat-elem.active').data('id_subc');
+
+    let out = {
+        name_mod: $("#ModName").val(),
+        price: $("#ModPrice").val(),
+        description: $("#ModDescription").val(),
+        picture: picture1.getAttribute('src'),
+        id_subcat: CurrentActiveSubCat
+    }
+
+    let res = await labPost("Modinsert", out)
+    update()
+}
+
+
+
+
 
 // filling in the SUBcategory table
 
@@ -293,9 +311,6 @@ async function MODEDIT() {
     let res = await labPost("Modedit", out)
 }
 
-
-// picture.getAttribute('src')
-
 async function labStart() {
     await update()
         // $("#upload").change(readURL);
@@ -318,6 +333,22 @@ async function labStart() {
 
     $("#imgInp").change(function() {
         readURL(this);
+    });
+
+    function readURL1(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#picture1').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgInp1").change(function() {
+        readURL1(this);
     });
 
     // Category placeholder
@@ -376,8 +407,8 @@ async function labStart() {
 
 
     //Model modals
+    $("#MODADD").click(MODADD)
     $("#MODEDIT").click(MODEDIT)
-
 
     // SubCategory placeholder
     $('#l-EditModel').on('show.bs.modal', function(event) {

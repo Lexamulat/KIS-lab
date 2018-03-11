@@ -127,6 +127,48 @@
 </div>
 
 
+
+
+
+<!-- Model window for Add new Model -->
+
+<div class="modal fade" id="l-createModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавление модели</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Название модели:</label>
+                        <input id="ModName" type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Описание модели:</label>
+                        <textarea id="ModDescription" class="form-control" id="message-text"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Цена модели:</label>
+                        <input id="ModPrice" type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <form id="upload" runat="server">
+                        <input type='file' id="imgInp1" />
+                        <img id="picture1" src="#" />
+                    </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Отмена</button>
+                <button type="button" id="MODADD" class="btn btn-primary btn-success" data-dismiss="modal">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Model window for Edit  Model -->
 <div class="modal fade" id="l-EditModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

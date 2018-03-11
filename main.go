@@ -60,6 +60,7 @@ func main() {
 	router.HandleFunc("/Moddel", h.ModDeleteItem).Methods("POST")
 	router.HandleFunc("/Modsearch", h.ModSearch).Methods("POST")
 	router.HandleFunc("/Modedit", h.ModEdit).Methods("POST")
+	router.HandleFunc("/Modinsert", h.ModInsert).Methods("POST")
 
 	router.PathPrefix("/static/").Handler(s)
 

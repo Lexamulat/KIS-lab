@@ -62,6 +62,8 @@
     
     .l-model_item-img {
         margin-right: 2%;
+        width: 100px;
+        height: 100px;
     }
     
     .l-model_item-about {
